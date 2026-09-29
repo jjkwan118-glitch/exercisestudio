@@ -580,19 +580,23 @@ SCENES.bridge = { cx:1.0, kneePref:[0,1], elbowPref:[0,1],
 })();
 
 (function(){
-  var LN=mk({ hx:.86, hy:.90, nx:.66, ny:.30, na:-30, fx:.80, fy:.07 });
-  var LF=mk({ hx:.86, hy:.90, nx:.90, ny:.07, fx:.60, fy:.30, fa:-30 });
-  SCENES.balance = { cx:1.05, kneePref:[1,.2], elbowPref:[-.3,-1],
-    hands:function(p,sh){ return { nx:sh.x+.10, ny:sh.y-.52, fx:sh.x+.14, fy:sh.y-.50 }; },   // hands free, chair just beside you
-    back:function(c,T){ chair(c,T,1.10); },
+  var LN=mk({ hx:.86, hy:.90, nx:.66, ny:.30, na:-30, fx:.80, fy:.07 });   // one foot lifted behind, standing on the other leg
+  var free=function(p,sh){ return { nx:sh.x+.10, ny:sh.y-.52, fx:sh.x+.14, fy:sh.y-.50 }; };   // hands free, chair just beside you
+  var chairBack=function(c,T){ chair(c,T,1.10); };
+  // Full demo: lift one foot, hold steady on that ONE leg for the whole time, then lower it.
+  SCENES.balance = { cx:1.05, kneePref:[1,.2], elbowPref:[-.3,-1], hands:free, back:chairBack,
     segs:[
-      { d:.6, h:.4, label:'Stand tall, chair close by', pose:POSE_STAND },
+      { d:.6, h:.5, label:'Stand tall, chair close by', pose:POSE_STAND },
       { d:1.0, label:'Lift one foot slightly', pose:LN },
-      { d:0, h:3, count:true, label:'Hold steady', pose:LN },
-      { d:1.0, label:'Place your foot down', pose:POSE_STAND },
-      { d:1.0, label:'Now lift the other foot', pose:LF },
-      { d:0, h:3, count:true, label:'Hold steady', pose:LF },
-      { d:1.0, label:'Place your foot down', pose:POSE_STAND }
+      { d:0, h:5, label:'Hold steady on this leg for the full time', pose:LN },
+      { d:1.2, label:'Lower your foot gently', pose:POSE_STAND }
+    ] };
+  // During the timed hold: lift once, then stay on the same leg until the time is up.
+  SCENES.balancehold = { cx:1.05, kneePref:[1,.2], elbowPref:[-.3,-1], hands:free, back:chairBack,
+    segs:[
+      { d:0, h:.4, label:'Stand tall, chair close by', pose:POSE_STAND },
+      { d:1.2, label:'Lift one foot slightly', pose:LN },
+      { d:0, h:3600, label:'Hold steady', pose:LN }
     ] };
 })();
 
@@ -607,7 +611,7 @@ Object.keys(SCENES).forEach(function(id){
 });
 
 SCENES.calf.thumbT=2.9; SCENES.bridge.thumbT=3.1; SCENES.wall.thumbT=4.0;
-SCENES.sts.thumbT=1.7; SCENES.step.thumbT=4.3; SCENES.stepdown.thumbT=4.5; SCENES.balance.thumbT=3.0;
+SCENES.sts.thumbT=1.7; SCENES.step.thumbT=4.3; SCENES.stepdown.thumbT=4.5; SCENES.balance.thumbT=3.5;
 
 // Small still image of an exercise, drawn with the same figure as the animated demo.
 var THUMBS = {};
@@ -720,15 +724,16 @@ var EXERCISES = [
     tip:'The slow lowering is the exercise, so take your time. Keep the knee of the leg on the step in line with your toes, and reach for the support only if you feel unsteady.',
     demo:'step down exercise slow controlled seniors' },
   // Timed exercise: "reps" = seconds held on each leg, "sets" = rounds (each round is both legs).
-  { id:'balance', numLabel:'6', name:'Supported single-leg balance', emoji:'⚖️', sets:1, reps:30, perRep:1, rest:5,
-    setLabels:['First leg','Other leg'],
-    cue:'Stand close to a sturdy chair, just in case, but do not hold it. Stand tall and lift one foot slightly off the floor.',
-    steps:['Stand tall close to a sturdy chair or wall, just in case, but do not hold it.','Shift your weight and lift one foot slightly off the floor.','Hold steady, then lower it gently.','Repeat with the other leg.'],
+  { id:'balance', numLabel:'6', name:'Single-leg balance', emoji:'⚖️', sets:1, reps:60, perRep:1, rest:5,
+    setLabels:['Left leg','Right leg'], holdScene:'balancehold',
+    cue:'Stand close to a sturdy chair, just in case, but do not hold it. Lift one foot slightly off the floor and hold it there on the same leg for the full time, then switch legs.',
+    steps:['Stand tall close to a sturdy chair or wall, just in case, but do not hold it.','Shift your weight onto one leg and lift the other foot slightly off the floor.','Hold steady on that same leg for the full time.','Lower your foot gently, rest, then repeat on the other leg.'],
     tip:'Keep the chair within arm\'s reach and only lift as high as feels safe. Reach for it if you feel unsteady.',
-    demo:'supported single leg balance exercise for seniors' }
+    demo:'single leg balance exercise for seniors' }
 ];
 var READY_SECONDS = 5;
 var KEY = 'legExerciseCoach.v2', OLD_KEY = 'legExerciseCoach.v1';
+var OLD_REPS = { balance:30 };   // previous default (seconds per leg)
 var OLD_REST = { calf:30, bridge:30, wall:30, sts:45, step:45, stepdown:45, balance:10 };   // previous defaults
 
 /* ---------- State ---------- */
@@ -752,7 +757,7 @@ function load(){
     EXERCISES.forEach(function(e){
       if(p.enabled && typeof p.enabled[e.id]==='boolean') s.enabled[e.id]=p.enabled[e.id];
       if(p.sets && p.sets[e.id]>=1) s.sets[e.id]=p.sets[e.id];
-      if(p.reps && p.reps[e.id]>=1) s.reps[e.id]=p.reps[e.id];
+      if(p.reps && p.reps[e.id]>=1 && p.reps[e.id]!==OLD_REPS[e.id]) s.reps[e.id]=p.reps[e.id];   // keep only values you changed yourself
       if(p.rest && p.rest[e.id]>=0 && p.rest[e.id]!==OLD_REST[e.id]) s.rest[e.id]=p.rest[e.id];   // keep only rests you changed yourself
     });
     if(p.between>=0) s.between=p.between;
@@ -773,6 +778,11 @@ function byId(id){ return EXERCISES.filter(function(e){ return e.id===id; })[0];
 function isTimed(e){ return !!e.setLabels; }
 function setsOf(e){ return isTimed(e) ? S.sets[e.id]*e.setLabels.length : (e.sides ? S.sets[e.id]*e.sides.length : S.sets[e.id]); }
 // For left/right exercises: all sets on the first leg, then all sets on the second leg.
+function legIndex(e,n){
+  if(e.sides) return Math.min(e.sides.length-1, Math.floor((n-1)/S.sets[e.id]));
+  if(e.setLabels) return (n-1)%e.setLabels.length;
+  return -1;
+}
 function sideOf(e,n){ if(!e.sides) return null; return e.sides[Math.min(e.sides.length-1, Math.floor((n-1)/S.sets[e.id]))]; }
 function repsOf(e){ return S.reps[e.id]; }
 function workOf(e){ return repsOf(e)*e.perRep; }
@@ -880,10 +890,10 @@ function openDemo(id){
   $('dPlay').textContent = 'Pause';
   if(demoPlayer){ demoPlayer.stop(); demoPlayer = null; }
   $('demoDlg').showModal();
-  demoPlayer = new DemoPlayer($('demoCanvas'), $('demoCap'), e.id, !!e.sides);   // left leg first
+  demoPlayer = new DemoPlayer($('demoCanvas'), $('demoCap'), e.id, !!(e.sides||e.setLabels));   // left leg first
   demoPlayer.start();
   setSpeed(1);
-  $('legCtrl').hidden = !e.sides;
+  $('legCtrl').hidden = !(e.sides||e.setLabels);
   setLeg(true);
 }
 $('demoClose').addEventListener('click',function(){ $('demoDlg').close(); });
@@ -1135,7 +1145,7 @@ function spokenText(st){
   return 'Well done. Rest. '+nextText(st)+'.';
 }
 
-function countText(sec){ sec=Math.max(0,Math.ceil(sec)); return sec>=60 ? clock(sec) : String(sec); }
+function countText(sec){ sec=Math.max(0,Math.ceil(sec)); return sec>=100 ? clock(sec) : String(sec); }
 
 function renderStep(){
   stopPreview();
@@ -1199,8 +1209,9 @@ function renderStep(){
   $('bStop').addEventListener('click',stopSession);
   var add = $('bAdd'); if(add) add.addEventListener('click',function(){ sess.endAt+=15000; sess.dur+=15000; sess.remaining+=15000; });
   $('bDemo').addEventListener('click',function(){ if(!sess.paused) togglePause(); openDemo(demoEx.id); });
-  var leftLeg = !isRest && demoEx.sides && sideOf(demoEx, st.type==='work' ? st.set : 1)===demoEx.sides[0];
-  sess.prev = new DemoPlayer($('prevCanvas'), $('prevCap'), isRest ? 'rest' : demoEx.id, leftLeg);
+  var leftLeg = !isRest && legIndex(demoEx, st.type==='work' ? st.set : 1)===0;
+  var sceneId = isRest ? 'rest' : (demoEx.holdScene || demoEx.id);
+  sess.prev = new DemoPlayer($('prevCanvas'), $('prevCap'), sceneId, leftLeg);
   sess.prev.start();
   updateTimerUI(sess.remaining);
   $('bPause').focus({preventScroll:true});
@@ -1211,7 +1222,7 @@ function updateTimerUI(rem){
   var num = $('tNum'); if(!num) return;
   var sec = Math.ceil(rem/1000);
   num.textContent = countText(rem/1000);
-  var sub = $('tSub'); if(sub) sub.textContent = sec>=60 ? 'minutes and seconds remaining' : 'seconds remaining';
+  var sub = $('tSub'); if(sub) sub.textContent = sec>=100 ? 'minutes and seconds remaining' : 'seconds remaining';
   var bar = $('barFill');
   if(bar) bar.style.width = (sess.dur>0 ? Math.max(0,Math.min(100,rem/sess.dur*100)) : 0)+'%';
   if(st.type==='work'){
