@@ -1,1845 +1,254 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-SG">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Leg Strength &amp; Balance Coach</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Exercise Studio: a front door to the guided exercise tools in the Digital Tools exercise folder, for adults of all ages. Part of Everyday Compass.">
+<meta name="referrer" content="no-referrer">
+<title>Exercise Studio — Everyday Compass</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2317B96B'/%3E%3Cpath d='M12 22l5 5 11-13' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
-:root{
-  --bg:#E0F0EE; --surface:#FFFFFF; --ink:#1B2B5B; --muted:#55627A; --line:#C9DAD6;
-  --primary:#3D7563; --primary-ink:#FFFFFF; --primary-soft:#E3F1EE;
-  --rest:#8A4700; --rest-soft:#FFF0D9; --done:#25703A; --done-soft:#E1F3E6;
-  --radius:16px; --bw:1.5px;
-}
-body.hc{
-  --bg:#FFFFFF; --ink:#000000; --muted:#1A1A1A; --line:#000000;
-  --primary:#1F4A3D; --primary-soft:#FFFFFF; --rest:#5E2F00; --rest-soft:#FFFFFF;
-  --done:#0F4F22; --done-soft:#FFFFFF; --bw:2.5px;
-}
+/* Look and feel follows One Stop Companion: phone-width column, green-to-blue header, cream page, rounded white cards with a coloured top edge. */
+:root{--ink:#17335F;--accent:#0E9B91;--gray:#665F57;--light-gray:#8D857B;--label:#E05A24;--shadow:0 10px 25px rgba(25,71,103,.11)}
 *{box-sizing:border-box}
-html{font-size:18px}
-html.t-large{font-size:21px}
-html.t-xl{font-size:24px}
-html.t-small{font-size:16px}
-body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:"Atkinson Hyperlegible",Verdana,Tahoma,"Segoe UI",sans-serif;
-  line-height:1.5; -webkit-text-size-adjust:100%;
-}
-h1,h2,h3{line-height:1.2; margin:0}
-p{margin:0}
-button,input{font:inherit; color:inherit}
-:focus-visible{outline:4px solid #F2A900; outline-offset:3px}
-.skip{position:absolute; left:-999px}
-.skip:focus{left:1rem; top:1rem; background:#fff; padding:.5rem 1rem; z-index:99}
-.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
-
-.btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:.4rem;
-  min-height:3.1rem; padding:.55rem 1.2rem; border-radius:999px;
-  border:var(--bw) solid var(--primary); background:var(--surface); color:var(--primary);
-  font-weight:700; cursor:pointer; text-decoration:none; text-align:center;
-}
-.btn.primary{background:var(--primary); color:var(--primary-ink)}
-.btn.big{min-height:3.7rem; font-size:1.15rem; width:100%}
-.btn:disabled{opacity:.45; cursor:not-allowed}
-.btn:active:not(:disabled){transform:translateY(1px)}
-
-.top{
-  max-width:44rem; margin:0 auto; padding:calc(1.2rem + env(safe-area-inset-top,0px)) 1.1rem .4rem;
-  display:flex; justify-content:space-between; align-items:flex-start; gap:.6rem 1rem; flex-wrap:wrap;
-}
-.top-btns{display:flex; gap:.5rem; flex-wrap:wrap}
-.top-btns .btn{min-height:2.7rem; padding:.3rem 1.1rem}
-.top h1{font-size:1.6rem}
-.top p{color:var(--muted); margin-top:.2rem}
-main{max-width:44rem; margin:0 auto; padding:.6rem 1.1rem calc(3rem + env(safe-area-inset-bottom,0px))}
-
-.plan{background:var(--primary); color:var(--primary-ink); border-radius:var(--radius); padding:1.2rem; margin:.6rem 0 1.2rem}
-body.hc .plan{border:var(--bw) solid #000}
-.plan h2{font-size:1.15rem; font-weight:700}
-.plan .sum{font-size:1.6rem; font-weight:700; margin:.3rem 0 .2rem}
-.plan .sub{opacity:.92; margin-bottom:1rem}
-.plan .btn.primary{background:#fff; color:var(--primary); border-color:#fff}
-.plan .hint{margin-top:.8rem; font-size:.9rem; opacity:.92}
-
-.list{list-style:none; margin:0; padding:0; display:grid; gap:.9rem}
-.card{background:var(--surface); border:var(--bw) solid var(--line); border-radius:var(--radius); padding:1rem 1.1rem}
-.card.off{background:transparent; border-style:dashed}
-.card-head{display:flex; gap:.8rem; align-items:flex-start}
-.num{flex:none; width:2.3rem; height:2.3rem; border-radius:50%; background:var(--primary-soft); color:var(--primary); border:var(--bw) solid var(--primary); display:grid; place-items:center; font-weight:700}
-.card h3{font-size:1.15rem}
-.meta{color:var(--muted); font-size:.95rem; margin-top:.15rem}
-.cue{margin:.7rem 0 .9rem; font-size:.98rem}
-.tags{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.45rem}
-.tag{font-size:.82rem; padding:.05rem .6rem; border-radius:999px; border:var(--bw) solid var(--line); color:var(--muted)}
-.tag.done{color:var(--done); border-color:var(--done); background:var(--done-soft); font-weight:700}
-.actions{display:grid; grid-template-columns:1fr 1fr; gap:.6rem}
-@media (max-width:26rem){.actions{grid-template-columns:1fr}}
-.resume{background:var(--rest-soft); border:var(--bw) solid var(--rest); border-radius:var(--radius); padding:1rem 1.1rem; margin:.6rem 0 0}
-.resume[hidden]{display:none}
-.resume h2{font-size:1.15rem}
-.resume p{margin:.3rem 0 .8rem; color:var(--ink)}
-.resume-btns{display:grid; gap:.6rem}
-.resume-btns .link{justify-self:center; padding:.4rem}
-.safety{margin-top:1.6rem; font-size:.85rem; color:var(--muted)}
-
-/* dialogs */
-dialog{width:min(44rem,100%); max-height:100dvh; height:100dvh; margin:0 auto; border:0; padding:0; background:var(--bg); color:var(--ink)}
-@media (min-width:50rem){dialog{height:min(90dvh,54rem); margin:auto; border-radius:var(--radius)}}
-dialog::backdrop{background:rgba(10,30,32,.6)}
-.dlg{display:flex; flex-direction:column; height:100%}
-.dlg-head{padding:1rem 1.1rem; display:flex; justify-content:space-between; align-items:center; gap:.8rem; border-bottom:var(--bw) solid var(--line)}
-.dlg-head h2{font-size:1.25rem}
-.dlg-body{padding:1rem 1.1rem 2rem; overflow:auto; flex:1}
-.sec{margin-bottom:1.6rem}
-.sec h3{font-size:1.1rem; margin-bottom:.2rem}
-.sec .help,.help{color:var(--muted); font-size:.92rem; margin-bottom:.7rem}
-.tools{display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:.8rem}
-.tools .btn{min-height:2.6rem; font-size:.95rem; padding:.3rem 1rem}
-.ex-row{background:var(--surface); border:var(--bw) solid var(--line); border-radius:12px; padding:.8rem .9rem; margin-bottom:.6rem}
-.chk{display:flex; align-items:center; gap:.7rem; font-weight:700; cursor:pointer; min-height:2.6rem}
-.chk input{width:1.6rem; height:1.6rem; accent-color:var(--primary); flex:none}
-.nums{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.6rem; margin-top:.5rem; align-items:start}
-.nums label{display:flex; flex-direction:column; font-size:.88rem; color:var(--muted); gap:.2rem; line-height:1.25}
-.nums input{width:100%; min-height:2.8rem; padding:.2rem .6rem; border:var(--bw) solid var(--line); border-radius:10px; background:var(--surface)}
-.est{display:flex; justify-content:space-between; align-items:baseline; gap:.8rem; padding:.5rem 0 0; margin-top:.6rem; border-top:1px solid var(--line); color:var(--muted); font-size:.95rem}
-.est b{color:var(--ink); font-size:1.05rem; white-space:nowrap}
-.est[hidden]{display:none}
-.est + .est{border-top:0; margin-top:0; padding-top:.2rem}
-.seg{display:flex; gap:.5rem; flex-wrap:wrap}
-.seg button{flex:1; min-width:6rem}
-.seg button[aria-pressed="true"]{background:var(--primary); color:var(--primary-ink)}
-.toggle-row{display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.55rem 0; border-bottom:1px solid var(--line)}
-.toggle-row:last-child{border-bottom:0}
-.toggle-row input{width:1.7rem; height:1.7rem; accent-color:var(--primary)}
-
-/* demo dialog */
-.stage{display:block; width:100%; max-width:32rem; margin:0 auto; aspect-ratio:5/4; border-radius:14px; background:#E7F1EE; border:var(--bw) solid var(--line)}
-.cap{font-size:1.25rem; font-weight:700; color:var(--primary); text-align:center; margin:.8rem 0 .6rem; min-height:2.9rem}
-.ctrl{display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; margin-bottom:1.3rem}
-.ctrl .btn{min-height:2.7rem; padding:.3rem 1.1rem}
-.ctrl .btn[aria-pressed="true"]{background:var(--primary); color:var(--primary-ink)}
-.ctrl[hidden]{display:none}
-.steps{margin:.4rem 0 .6rem; padding-left:1.4rem}
-.steps li{margin:.4rem 0}
-.plan-line{font-weight:700; margin-bottom:.4rem}
-
-/* links, chips */
-.link{background:none; border:0; padding:0; font:inherit; color:var(--primary); text-decoration:underline; text-underline-offset:.2em; cursor:pointer; text-align:left}
-.chips{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.55rem}
-.chip{background:#E8EEED; color:var(--muted); border-radius:14px; padding:.1rem .85rem; font-size:.95rem}
-body.hc .chip{background:#fff; border:2px solid #000; color:#000}
-.pill{background:var(--primary); color:var(--primary-ink); border-radius:999px; padding:.15rem .9rem; font-weight:700}
-
-/* routine review screen */
-#routine,#history{position:fixed; inset:0; z-index:40; background:var(--bg); overflow:auto;
-  padding:calc(.9rem + env(safe-area-inset-top,0px)) .9rem calc(1.5rem + env(safe-area-inset-bottom,0px))}
-#routine[hidden],#history[hidden]{display:none}
-.r-wrap{max-width:34rem; margin:0 auto}
-.r-back{min-height:2.6rem; margin-bottom:.8rem; padding:.3rem 1.1rem}
-.r-card{background:var(--surface); border:var(--bw) solid var(--line); border-radius:24px; padding:1.3rem 1.2rem}
-.r-title{font-size:1.6rem}
-.r-badge{display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; background:#E8EEED; border-radius:16px; padding:.75rem 1rem; margin:1rem 0 .9rem; color:var(--ink)}
-body.hc .r-badge{background:#fff; border:2px solid #000}
-.r-note{color:var(--muted); font-size:.95rem}
-.r-list{list-style:none; margin:.9rem 0 1.4rem; padding:0}
-.r-item{padding:1rem 0; border-top:1.5px solid var(--line); display:flex; gap:.9rem; align-items:center}
-.r-info{min-width:0}
-.thumbbtn{flex:none; padding:0; border:0; background:none; cursor:pointer; border-radius:12px; line-height:0}
-.thumb{display:block; width:4.9rem; aspect-ratio:5/4; border-radius:12px; background:#E7F1EE; border:var(--bw) solid var(--line); object-fit:cover}
-.thumb.sm{width:3.6rem; border-radius:10px}
-.r-off li>span{display:flex; align-items:center; gap:.7rem}
-.r-name{font-size:1.2rem; line-height:1.35}
-.r-empty{padding:1.2rem 0; color:var(--muted)}
-.h-list{list-style:none; margin:.9rem 0 1.2rem; padding:0}
-.h-item{padding:1rem 0; border-top:1.5px solid var(--line)}
-.h-date{font-weight:700; color:var(--ink); font-size:1.1rem; text-align:left}
-.h-row{display:flex; justify-content:space-between; align-items:center; gap:.8rem; width:100%; background:none; border:0; padding:.2rem 0; cursor:pointer; color:var(--ink); font:inherit}
-.h-plus{flex:none; width:2.3rem; height:2.3rem; border-radius:50%; border:var(--bw) solid var(--primary); color:var(--primary); display:grid; place-items:center; font-size:1.5rem; font-weight:700; line-height:1}
-.h-ex{margin-top:.5rem !important}
-.h-count{color:var(--muted); font-size:.95rem; margin:.1rem 0 .45rem}
-.h-ex{list-style:none; margin:0; padding:0; display:grid; gap:.2rem}
-.h-ex li{color:var(--done); font-weight:700}
-.h-keep{margin:.2rem 0 .6rem}
-.h-tools{margin:.6rem 0 1rem; padding:.9rem 1rem; border:var(--bw) solid var(--line); border-radius:16px; display:grid; gap:.6rem}
-.h-tool-row{display:grid; grid-template-columns:1fr 1fr; gap:.5rem}
-.h-tool-row .btn{min-height:2.6rem; padding:.2rem .6rem; font-size:.95rem}
-.btn.danger{border-color:#A32020; color:#A32020}
-.btn.danger.armed{background:#A32020; color:#fff}
-.h-check{display:flex; align-items:center; gap:.7rem; cursor:pointer; min-height:2.6rem}
-.h-check input{width:1.6rem; height:1.6rem; accent-color:var(--primary); flex:none}
-.warn{background:var(--rest-soft); border:var(--bw) solid var(--rest); border-radius:16px; padding:.8rem 1rem; margin:.6rem 0 0; color:var(--ink); font-size:.95rem}
-.warn[hidden]{display:none}
-.btn.done-state,.btn.done-state:disabled{background:var(--done-soft); border-color:var(--done); color:var(--done); opacity:1; cursor:default}
-.miss{width:100%; border-top:1.5px solid var(--line); margin-top:.4rem; padding-top:.5rem}
-.miss-row{display:flex; justify-content:space-between; align-items:center; gap:.6rem; text-align:left; padding:.4rem 0}
-.miss-row .btn{min-height:2.4rem; padding:.15rem .9rem; font-size:.95rem; flex:none}
-.h-backup{margin-top:1.1rem; border-top:1.5px solid var(--line); padding-top:.8rem}
-.h-backup summary{cursor:pointer; font-weight:700; color:var(--primary)}
-.h-backup textarea{display:block; width:100%; margin:.5rem 0; padding:.5rem; border:var(--bw) solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); font:.8rem/1.3 monospace}
-.h-backup .btn{width:100%; margin-bottom:.4rem}
-.h-head{display:flex; justify-content:space-between; align-items:center; gap:.8rem}
-.h-edit{min-height:2.6rem; padding:.3rem 1.1rem}
-.h-time{color:var(--muted); font-weight:400}
-.h-ex li{display:flex; justify-content:space-between; align-items:center; gap:.6rem}
-.h-rm{min-height:2.3rem; padding:.15rem .9rem; font-size:.9rem; flex:none}
-.h-add{margin:.9rem 0 .4rem; padding:.9rem 1rem; border:var(--bw) dashed var(--line); border-radius:16px}
-.h-add h3{font-size:1.05rem}
-.h-add label{display:flex; flex-direction:column; gap:.2rem; margin:.6rem 0; color:var(--muted); font-size:.95rem}
-.h-add input,.h-add select{min-height:2.8rem; padding:.2rem .6rem; border:var(--bw) solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); font:inherit}
-.h-add .btn{width:100%}
-.r-off{margin:0 0 1.3rem; padding:.8rem 1rem; border:var(--bw) dashed var(--line); border-radius:16px}
-.r-off h3{font-size:1rem; color:var(--muted); margin-bottom:.3rem}
-.r-off ul{list-style:none; margin:0; padding:0}
-.r-off li{display:flex; justify-content:space-between; align-items:center; gap:.6rem; padding:.35rem 0}
-.r-off .btn{min-height:2.4rem; padding:.2rem 1rem; font-size:.95rem; flex:none}
-.r-more{margin-top:.7rem; width:100%}
-
-/* session: one exercise at a time, with a live demo and countdown */
-#session{
-  position:fixed; inset:0; z-index:50; background:var(--bg); overflow:auto; display:flex;
-  padding:calc(.7rem + env(safe-area-inset-top,0px)) .8rem calc(.7rem + env(safe-area-inset-bottom,0px));
-  --phase:#2F6B57; --phase-soft:#E1F1EC;
-}
-#session[hidden]{display:none}
-#session.p-rest{--phase:#9A5200; --phase-soft:#FFEBD0}
-#session.p-ready{--phase:#1B2B5B; --phase-soft:#E4E9F7}
-body.hc #session{--phase:#000; --phase-soft:#EEE}
-.s-card{
-  flex:1 0 auto; width:100%; max-width:34rem; margin:0 auto; background:var(--surface);
-  border:var(--bw) solid var(--line); border-radius:24px; padding:.8rem 1.1rem 0;
-  display:flex; flex-direction:column; align-items:center; text-align:center; gap:.3rem;
-}
-.s-top{color:var(--muted); font-size:1rem}
-.stage-s{display:block; width:min(100%,33vh); width:min(100%,33dvh); aspect-ratio:5/4; border-radius:16px; background:#E7F1EE}
-.s-cap{display:flex; gap:.45rem; align-items:center; justify-content:center; min-height:1.7rem; font-weight:700; font-size:1.05rem; line-height:1.25; color:var(--phase)}
-.s-title{font-size:1.3rem; font-weight:700; color:var(--ink); line-height:1.2}
-.s-count{font-size:3.6rem; font-weight:700; color:var(--phase); line-height:1; font-variant-numeric:tabular-nums; margin-top:.2rem}
-.s-sub{color:var(--muted); font-size:.95rem}
-.bar{width:100%; max-width:20rem; height:.6rem; border-radius:99px; background:var(--phase-soft); overflow:hidden; margin:.2rem 0}
-body.hc .bar{border:2px solid #000}
-.bar i{display:block; height:100%; width:100%; background:var(--phase)}
-.s-rep{font-weight:700; color:var(--ink); font-size:1.5rem; line-height:1.2; min-height:1.8rem}
-.s-hold{font-weight:700; color:var(--phase); font-size:1.1rem; min-height:1.4rem}
-.dots{display:flex; flex-wrap:wrap; gap:.35rem; justify-content:center; max-width:20rem; margin-bottom:.2rem}
-.dots i{width:.75rem; height:.75rem; border-radius:50%; background:var(--surface); border:2px solid var(--phase)}
-.dots i.on{background:var(--phase)}
-.dots i.cur{border-width:4px}
-.s-desc{color:var(--muted); font-size:.92rem; max-width:28rem}
-.s-btns{
-  position:sticky; bottom:0; margin-top:auto; width:100%; padding:.7rem 0 .8rem;
-  background:linear-gradient(to bottom,rgba(255,255,255,0),var(--surface) 24%);
-  display:grid; grid-template-columns:1fr 1fr; gap:.6rem;
-}
-.s-btns .btn.main{grid-column:1/-1; background:var(--primary); color:var(--primary-ink); min-height:3.3rem; font-size:1.2rem}
-.s-btns .btn{min-height:2.7rem; padding:.3rem 1rem}
-.s-btns .wide{grid-column:1/-1}
-.done-list{list-style:none; padding:0; margin:.4rem 0; display:grid; gap:.3rem}
-.done-list li{font-weight:700; color:var(--done)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+body{margin:0;font-family:'Libre Franklin',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 12% 4%,rgba(39,117,230,.13),transparent 24%),radial-gradient(circle at 90% 10%,rgba(24,184,107,.15),transparent 24%),#DDF4F1;line-height:1.5}
+.phone{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#FFFDF8 0%,#FFF9EE 100%);box-shadow:0 0 40px rgba(20,69,90,.16)}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:3px solid #925300;outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+header{background:linear-gradient(120deg,#17B96B 0%,#0EA88E 55%,#2775E6 115%);color:#fff;padding:26px 20px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;box-shadow:0 7px 20px rgba(15,118,110,.18)}
+header h1{margin:0;font-size:24px;font-weight:800;line-height:1.15;letter-spacing:-.02em}
+header p{margin:4px 0 0;font-size:14px;font-weight:600;opacity:.95}
+.aud{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:4px 11px}
+.icon-btn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.32);box-shadow:0 4px 12px rgba(0,0,0,.08);flex-shrink:0}
+main{flex-grow:1;padding:18px 18px 28px;display:flex;flex-direction:column;gap:16px}
+.hero{margin:0;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(223,191,142,.72);background:#fff}
+.hero img{display:block;width:100%;height:auto}
+.notice{background:#fff;border:1px solid rgba(223,191,142,.72);border-left:5px solid #2775E6;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);font-size:15px;color:#3b4a63}
+.notice strong{display:block;font-size:15px;color:var(--ink);margin-bottom:2px}
+.label{margin:6px 2px -6px;font-size:15px;font-weight:800;color:var(--label);text-transform:uppercase;letter-spacing:.045em}
+.hint{margin:0 2px;padding:14px 16px;border:2px dashed #BFD3FF;border-radius:16px;background:#F6F9FF;font-size:15px;color:#3b4a63;text-align:center}
+.hint[hidden]{display:none}
+#tools{display:flex;flex-direction:column;gap:16px}
+.tool{background:#fff;border:1px solid rgba(223,191,142,.72);border-top:5px solid var(--c);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.tool-img{display:block;width:100%;height:auto}
+.tool-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:10px}
+.tag{margin:0;font-size:12.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--c)}
+.tool h2{margin:0;font-size:21px;line-height:1.2;letter-spacing:-.015em}
+.desc{margin:0;font-size:15.5px;color:var(--gray)}
+.chips{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.chips li{font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--soft);color:#2b3a55;border:1px solid rgba(0,0,0,.05)}
+.open{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:14px;background:linear-gradient(135deg,#0E9B91,#087F7A);color:#fff;font-size:17px;font-weight:700;box-shadow:0 6px 14px rgba(14,155,145,.2);margin-top:4px}
+.open:hover{filter:brightness(1.06)}
+.tips{background:#E7F7F1;border:1px solid #A7E3D8;border-radius:18px;padding:16px 18px;font-size:15px;color:#2b3a55}
+.tips h2{margin:0 0 8px;font-size:17px}
+.tips ul{margin:0;padding-left:20px}.tips li+li{margin-top:6px}
+.home{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;border-radius:14px;background:#fff;border:1px solid rgba(223,191,142,.9);font-weight:700;font-size:16px;box-shadow:var(--shadow)}
+footer{padding:6px 20px 24px;text-align:center}
+footer p{margin:0 0 4px;font-size:13px;color:var(--light-gray)}
+.picker{position:relative;margin:0}
+.picker .label{margin:6px 2px 8px}
+.pick-btn{width:100%;display:flex;align-items:center;gap:12px;min-height:60px;padding:8px 14px 8px 8px;background:#fff;border:2px solid #0E9B91;border-radius:16px;box-shadow:var(--shadow);font:inherit;font-size:17px;font-weight:800;color:var(--ink);text-align:left;cursor:pointer}
+.pick-btn:focus-visible{outline:3px solid #925300;outline-offset:3px}
+.pick-btn .chev{margin-left:auto;flex-shrink:0;transition:transform .15s}
+.pick-btn[aria-expanded=true] .chev{transform:rotate(180deg)}
+.pick-thumb{width:56px;height:44px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#E4F8EE;display:grid;place-items:center;border:1px solid rgba(0,0,0,.06)}
+.pick-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pick-text{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.pick-text small{font-size:12.5px;font-weight:600;color:var(--gray);margin-top:2px}
+.pick-list{list-style:none;margin:8px 0 0;padding:6px;position:absolute;left:0;right:0;z-index:20;background:#fff;border:2px solid #0E9B91;border-radius:16px;box-shadow:0 16px 34px rgba(25,71,103,.22);max-height:70vh;overflow:auto}
+.pick-list[hidden]{display:none}
+.pick-opt{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 8px;border-radius:12px;cursor:pointer;font-size:16px;font-weight:700}
+.pick-opt:hover,.pick-opt.active{background:#E7F7F1}
+.pick-opt[aria-selected=true]{background:#DDF4F1;box-shadow:inset 4px 0 0 #0E9B91}
+.pick-opt .tick{margin-left:auto;color:#0E9B91;font-size:18px;visibility:hidden}
+.pick-opt[aria-selected=true] .tick{visibility:visible}
+.soon{border:2px dashed #8CAAFA;border-radius:20px;background:linear-gradient(135deg,#F2F6FF,#EAFBF4);padding:20px 18px;text-align:center}
+.soon .soon-icon{width:56px;height:56px;border-radius:16px;margin:0 auto 10px;display:grid;place-items:center;background:#fff;box-shadow:var(--shadow)}
+.soon h2{margin:0 0 6px;font-size:19px}
+.soon p{margin:0;font-size:15.5px;color:var(--gray)}
+.soon .pill{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#2775E6;background:#fff;border:1px solid #BFD3FF;border-radius:999px;padding:5px 12px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.icon-btn,.open,.home,.picker{display:none}}
 </style>
 </head>
 <body>
-<a class="skip" href="#list">Skip to exercises</a>
-
-<header class="top">
-  <div>
-    <h1>Leg strength &amp; balance</h1>
-    <p id="dateLine"></p>
-  </div>
-  <div class="top-btns">
-    <button class="btn" id="openHistory" type="button">History</button>
-    <button class="btn" id="openSettings" type="button">Settings</button>
-  </div>
+<div class="phone">
+<header>
+  <div><h1>Exercise Studio</h1><p>Guided routines to follow at home</p><span class="aud">For adults of all ages</span></div>
+  <a class="icon-btn" href="index.html" aria-label="Back to Everyday Compass"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
 </header>
-
-<main>
-  <section class="warn" id="storeWarn" hidden>
-    <strong>This viewer is not saving your data.</strong> Your settings and history will be lost when you close it. Open the file in Safari or Chrome (or add it to your Home Screen) to keep them. You can also copy a backup from History.
+<main id="main">
+  <figure class="hero"><img src="data:image/webp;base64,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" width="860" height="438" alt="Illustrations of a person doing a lying lower back exercise, a seated leg exercise and a standing knee exercise with support"></figure>
+  <div class="notice"><strong>Before you start</strong>These guided tools help you follow an exercise routine. They do not diagnose conditions or prescribe treatment. Follow your physiotherapist’s advice, and stop if you feel pain, dizziness or unwell.</div>
+  <div class="picker" id="picker">
+    <p class="label" id="pick-label">Choose a routine</p>
+    <button type="button" class="pick-btn" id="pick-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="pick-list" aria-labelledby="pick-label pick-val"></button>
+    <ul class="pick-list" id="pick-list" role="listbox" tabindex="-1" aria-labelledby="pick-label" hidden></ul>
+  </div>
+  <p class="hint" id="hint">Select a routine above to see its details and open the tool.</p>
+  <p class="sr" id="status" role="status" aria-live="polite">Loading the exercise tools…</p>
+  <div id="tools"></div>
+  <section class="tips" aria-labelledby="tips-h"><h2 id="tips-h">Small tips, smoother sessions</h2><ul><li>Use a stable chair or a wall for support.</li><li>Move slowly and rest between exercises.</li><li>Keep your physiotherapist’s sheet nearby and check with them before changing your plan.</li></ul></section>
+  <section class="soon" aria-labelledby="soon-h">
+    <div class="soon-icon" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2775E6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
+    <h2 id="soon-h">More routines are coming soon</h2>
+    <p>We are adding more guided exercise tools. Check back again soon.</p>
+    <span class="pill">Coming soon</span>
   </section>
-
-  <section class="resume" id="resumeCard" hidden aria-labelledby="resumeTitle">
-    <h2 id="resumeTitle">Session stopped</h2>
-    <p id="resumeInfo"></p>
-    <div class="resume-btns">
-      <button class="btn primary" id="resumeBtn" type="button">▶ Resume</button>
-      <button class="btn" id="markBtn" type="button" hidden>Mark as done</button>
-      <button class="btn" id="restartBtn" type="button">Restart this exercise</button>
-      <button class="link" id="discardBtn" type="button">Discard session</button>
-    </div>
-  </section>
-
-  <section class="plan" aria-labelledby="planTitle">
-    <h2 id="planTitle">Today's plan</h2>
-    <p class="sum" id="planSum"></p>
-    <p class="sub" id="planSub"></p>
-    <button class="btn primary big" id="startAll" type="button">Start all exercises</button>
-    <p class="hint">This shows today's routine first, so you can check it and watch demos before you begin. Or start one exercise from the list below.</p>
-  </section>
-
-  <ol class="list" id="list"></ol>
-
-  <p class="safety">These exercises are general guidance, not medical advice. Keep a sturdy chair, rail or wall within reach, and stop straight away if you feel pain, dizziness or unsteadiness. Check with your doctor or physiotherapist if you are unsure.</p>
+  <a class="home" href="index.html">← Back to Everyday Compass</a>
 </main>
-
-<!-- Demo -->
-<dialog id="demoDlg" aria-labelledby="demoTitle">
-  <div class="dlg">
-    <div class="dlg-head">
-      <h2 id="demoTitle"></h2>
-      <button class="btn primary" id="demoClose" type="button">Close</button>
-    </div>
-    <div class="dlg-body">
-      <canvas class="stage" id="demoCanvas" role="img"></canvas>
-      <p class="cap" id="demoCap"></p>
-      <div class="ctrl">
-        <button class="btn" id="dPlay" type="button">Pause</button>
-        <button class="btn" id="dReplay" type="button">Replay</button>
-        <button class="btn" id="dSlow" type="button" aria-pressed="false">Slow</button>
-        <button class="btn" id="dNormal" type="button" aria-pressed="true">Normal</button>
-      </div>
-      <div class="ctrl" id="legCtrl" hidden>
-        <button class="btn" id="dLeft" type="button" aria-pressed="true">Left leg</button>
-        <button class="btn" id="dRight" type="button" aria-pressed="false">Right leg</button>
-      </div>
-      <section class="sec">
-        <h3>How to do it</h3>
-        <p class="plan-line" id="demoPlan"></p>
-        <ol class="steps" id="demoSteps"></ol>
-        <p class="help" id="demoTip"></p>
-      </section>
-      <a class="btn" id="demoYT" href="#" target="_blank" rel="noopener noreferrer">Find more videos on YouTube</a>
-      <p class="help" style="margin-top:.9rem">This is an animated illustration to show the movement. Go at your own pace and stop if anything hurts.</p>
-    </div>
-  </div>
-</dialog>
-
-<!-- Settings -->
-<dialog id="settings" aria-labelledby="setTitle">
-  <div class="dlg">
-    <div class="dlg-head">
-      <h2 id="setTitle">Settings</h2>
-      <button class="btn primary" id="closeSettings" type="button">Done</button>
-    </div>
-    <div class="dlg-body">
-      <section class="sec">
-        <h3>Exercises for today</h3>
-        <p class="help">Tick the exercises you want in "Start all". You can still start any exercise on its own from the main list. Set the sets and reps for each one, plus an optional rest between reps (leave it blank for none). The time per set is worked out for you.</p>
-        <div class="tools">
-          <button class="btn" type="button" id="selAll">Select all</button>
-          <button class="btn" type="button" id="selNone">Clear all</button>
-          <button class="btn" type="button" id="resetTiming">Reset to defaults</button>
-        </div>
-        <div id="exRows"></div>
-      </section>
-
-      <section class="sec">
-        <h3>Rest between exercises</h3>
-        <div class="nums" style="display:block; max-width:10rem">
-          <label>Seconds <input type="number" id="between" min="5" max="180" inputmode="numeric"></label>
-        </div>
-      </section>
-
-      <section class="sec">
-        <h3>Sound and voice</h3>
-        <div class="toggle-row"><label for="optSound">Beeps for the last 3 seconds and each change</label><input type="checkbox" id="optSound"></div>
-        <div class="toggle-row"><label for="optVoice">Spoken instructions</label><input type="checkbox" id="optVoice"></div>
-      </section>
-
-      <section class="sec">
-        <h3>Display</h3>
-        <p class="help">Text size</p>
-        <div class="seg" id="sizeSeg">
-          <button class="btn" type="button" data-size="small" aria-pressed="false">Small</button>
-          <button class="btn" type="button" data-size="normal" aria-pressed="false">Normal</button>
-          <button class="btn" type="button" data-size="large" aria-pressed="false">Large</button>
-          <button class="btn" type="button" data-size="xl" aria-pressed="false">Extra large</button>
-        </div>
-        <div class="toggle-row" style="margin-top:.8rem"><label for="optHC">High contrast</label><input type="checkbox" id="optHC"></div>
-      </section>
-    </div>
-  </div>
-</dialog>
-
-<!-- History -->
-<div id="history" hidden role="dialog" aria-modal="true" aria-label="Exercise history"></div>
-
-<!-- Routine review -->
-<div id="routine" hidden role="dialog" aria-modal="true" aria-label="Today's routine"></div>
-
-<!-- Session -->
-<div id="session" hidden role="dialog" aria-modal="true" aria-label="Exercise timer"></div>
-<div class="sr" id="announcer" aria-live="polite"></div>
-
+<footer><p>Part of Everyday Compass · An independent hub, not a medical service.</p><p>This page checks the Digital Tools exercise folder for new tools when it opens.</p></footer>
+</div>
+<noscript><p style="max-width:430px;margin:0 auto;padding:16px">Turn on JavaScript to see the exercise cards. You can still open the tools directly:
+<a href="https://sgkjeajk.github.io/digital-tools/exercise/LegStrengthBalance.html">Leg Strength &amp; Balance</a>,
+<a href="https://sgkjeajk.github.io/digital-tools/exercise/lowerbackhipmobility.html">Lower Back &amp; Hip Mobility</a>,
+<a href="https://pages.sharable.link/q850ldwm">Knee Support Strength</a>.</p></noscript>
 <script>
-(function(){
-'use strict';
-
-/*ENGINE-START*/
-/* ===== Animated demo engine: a side-view figure driven by keyframed poses ===== */
-var SEG = { thigh:.42, shin:.42, torso:.52, uarm:.29, farm:.28, foot:.2, headR:.105, neck:.17 };
-var PK = ['hx','hy','th','hd','nx','ny','na','fx','fy','fa'];
-var DEP = [.06,.04];               // depth offset used for pseudo-3D props
-var RAD = Math.PI/180;
-
-function lerp(a,b,u){ return a+(b-a)*u; }
-function clamp01(u){ return Math.max(0,Math.min(1,u)); }
-function smooth(u){ u=clamp01(u); return u*u*(3-2*u); }
-
-// Pose: hip (hx,hy), torso angle th (deg from vertical, + = leans forward), head angle hd,
-// near ankle (nx,ny) + foot angle na, far ankle (fx,fy) + foot angle fa.
-function mk(o){
-  var p = { hx:.9, hy:.9, th:0, nx:.9, ny:.07, na:-10, fx:.84, fy:.07, fa:-10 };
-  for(var k in o) p[k]=o[k];
-  if(p.hd===undefined) p.hd = p.th;
-  return p;
-}
-function lerpPose(a,b,u){ var r={}; PK.forEach(function(k){ r[k]=lerp(a[k],b[k],u); }); return r; }
-
-// Two-bone inverse kinematics. Returns the middle joint (knee/elbow) and the reachable end point.
-function ik(ax,ay,bx,by,l1,l2,px,py){
-  var dx=bx-ax, dy=by-ay, d=Math.hypot(dx,dy)||1e-6;
-  var maxd=(l1+l2)*0.9995, mind=Math.abs(l1-l2)+0.002;
-  var dd=Math.min(Math.max(d,mind),maxd);
-  var ux=dx/d, uy=dy/d;
-  var a=(l1*l1-l2*l2+dd*dd)/(2*dd);
-  var h=Math.sqrt(Math.max(0,l1*l1-a*a));
-  var mx=ax+ux*a, my=ay+uy*a;
-  var c1x=mx-uy*h, c1y=my+ux*h, c2x=mx+uy*h, c2y=my-ux*h;
-  var s1=(c1x-mx)*px+(c1y-my)*py, s2=(c2x-mx)*px+(c2y-my)*py;
-  var useFirst = s1>=s2;
-  return { mx:useFirst?c1x:c2x, my:useFirst?c1y:c2y, ex:ax+ux*dd, ey:ay+uy*dd, stretch:Math.max(0,d-maxd) };
-}
-
-function skeleton(p,sc){
-  var th=p.th*RAD, hd=p.hd*RAD;
-  var hip={x:p.hx,y:p.hy};
-  var sh={x:hip.x+SEG.torso*Math.sin(th), y:hip.y+SEG.torso*Math.cos(th)};
-  var head={x:sh.x+SEG.neck*Math.sin(hd), y:sh.y+SEG.neck*Math.cos(hd)};
-  var lp=sc.kneePref, ep=sc.elbowPref;
-  var ln=ik(hip.x,hip.y,p.nx,p.ny,SEG.thigh,SEG.shin,lp[0],lp[1]);
-  var lf=ik(hip.x,hip.y,p.fx,p.fy,SEG.thigh,SEG.shin,lp[0],lp[1]);
-  var h=sc.hands(p,sh);
-  var an=ik(sh.x,sh.y,h.nx,h.ny,SEG.uarm,SEG.farm,ep[0],ep[1]);
-  var af=ik(sh.x,sh.y,h.fx,h.fy,SEG.uarm,SEG.farm,ep[0],ep[1]);
-  function toe(l,a){ return {x:l.ex+SEG.foot*Math.cos(a*RAD), y:l.ey+SEG.foot*Math.sin(a*RAD)}; }
-  return { hip:hip, sh:sh, head:head, face:{x:Math.cos(hd),y:-Math.sin(hd)},
-           ln:ln, lf:lf, an:an, af:af, toeN:toe(ln,p.na), toeF:toe(lf,p.fa) };
-}
-
-/* ----- drawing helpers ----- */
-function seg(c,T,x0,y0,x1,y1,w,col,alpha){
-  c.save(); if(alpha!==undefined) c.globalAlpha=alpha;
-  c.lineCap='round'; c.strokeStyle=col; c.lineWidth=Math.max(1,w*T.s);
-  c.beginPath(); c.moveTo(T.x(x0),T.y(y0)); c.lineTo(T.x(x1),T.y(y1)); c.stroke(); c.restore();
-}
-function poly(c,T,pts,fill){
-  c.beginPath();
-  pts.forEach(function(q,i){ var X=T.x(q[0]),Y=T.y(q[1]); if(i) c.lineTo(X,Y); else c.moveTo(X,Y); });
-  c.closePath(); c.fillStyle=fill; c.fill();
-}
-function box(c,T,x0,y0,x1,y1,front,top,side){
-  var dx=DEP[0], dy=DEP[1];
-  poly(c,T,[[x0,y1],[x1,y1],[x1+dx,y1+dy],[x0+dx,y1+dy]],top);
-  poly(c,T,[[x1,y0],[x1+dx,y0+dy],[x1+dx,y1+dy],[x1,y1]],side);
-  poly(c,T,[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],front);
-}
-function ball(c,T,x,y,r,col,hi){
-  var X=T.x(x), Y=T.y(y), R=r*T.s;
-  var g=c.createRadialGradient(X-R*.35,Y-R*.4,R*.1,X,Y,R);
-  g.addColorStop(0,hi); g.addColorStop(1,col);
-  c.fillStyle=g; c.beginPath(); c.arc(X,Y,R,0,Math.PI*2); c.fill();
-}
-function limb(c,T,a,b,w,pal){
-  seg(c,T,a.x,a.y,b.x,b.y,w,pal.m);
-  // soft highlight to hint at a rounded, 3D limb
-  var o=w*.18;
-  seg(c,T,a.x-o*.6,a.y+o,b.x-o*.6,b.y+o,w*.32,pal.h,.5);
-}
-
-function chair(c,T,xb){
-  var wood='#A98763', woodD='#7A5C3F', woodL='#C7A883';
-  [xb+.03, xb+.43].forEach(function(x){ seg(c,T,x+DEP[0],DEP[1],x+DEP[0],.42+DEP[1],.035,woodD); });
-  box(c,T,xb-.02,.41,xb+.44,.46,wood,woodL,woodD);
-  box(c,T,xb-.02,.46,xb+.02,.98,wood,woodL,woodD);
-  [xb+.03, xb+.43].forEach(function(x){ seg(c,T,x,0,x,.41,.035,wood); });
-}
-function floorAndBg(c,T,W,H){
-  c.fillStyle='#E7F1EE'; c.fillRect(0,0,W,H);
-  var gy=T.y(0);
-  c.fillStyle='#CFE0DB'; c.fillRect(0,gy,W,H-gy);
-  c.fillStyle='#AFC5BF'; c.fillRect(0,gy,W,Math.max(2,T.s*.012));
-}
-function wall(c,T,wx,W){
-  var left=T.x(wx)-W*2, gy=T.y(0);
-  c.fillStyle='#D5E0DC'; c.fillRect(left,0,T.x(wx)-left,gy);
-  c.fillStyle='#9DB1AB'; c.fillRect(T.x(wx)-Math.max(3,T.s*.02),0,Math.max(3,T.s*.02),gy);
-  c.fillStyle='rgba(255,255,255,.35)';
-  for(var y=.3;y<2.2;y+=.45){ c.fillRect(left,T.y(y),T.x(wx)-left,Math.max(1,T.s*.008)); }
-}
-function rail(c,T,y){
-  seg(c,T,.62,0,.62,y,.035,'#9BA9AF'); seg(c,T,2.15,0,2.15,y,.035,'#9BA9AF');
-  seg(c,T,.5,y,2.3,y,.045,'#7E8E96');
-  seg(c,T,.5,y+.012,2.3,y+.012,.014,'#B6C3C8',.8);
-}
-function mat(c,T){ box(c,T,.28,0,1.85,.03,'#4F7FA3','#7DA6C6','#3F6685'); }
-
-function drawFigure(c,T,p,sc){
-  var k=skeleton(p,sc);
-  var far={m:'#1F4F43',h:'#4E8F7B'}, near={m:'#2E7360',h:'#8ED3BC'};
-  // ground shadow
-  c.save(); c.globalAlpha=.16; c.fillStyle='#0B2A24'; c.beginPath();
-  c.ellipse(T.x(k.hip.x),T.y(0)+2,T.s*.5,T.s*.045,0,0,Math.PI*2); c.fill(); c.restore();
-
-  function arm(a,pal){ limb(c,T,k.sh,{x:a.mx,y:a.my},.075,pal); limb(c,T,{x:a.mx,y:a.my},{x:a.ex,y:a.ey},.065,pal); ball(c,T,a.ex,a.ey,.042,pal.m,pal.h); }
-  function leg(l,toe,pal){ limb(c,T,k.hip,{x:l.mx,y:l.my},.125,pal); limb(c,T,{x:l.mx,y:l.my},{x:l.ex,y:l.ey},.09,pal); limb(c,T,{x:l.ex,y:l.ey},toe,.065,pal); }
-
-  arm(k.af,far); leg(k.lf,k.toeF,far);
-  limb(c,T,k.hip,k.sh,.17,near);
-  seg(c,T,k.sh.x,k.sh.y,k.head.x,k.head.y,.06,near.m);
-  ball(c,T,k.head.x,k.head.y,SEG.headR,near.m,near.h);
-  ball(c,T,k.head.x+k.face.x*.1,k.head.y+k.face.y*.1-.005,.026,near.m,near.h);
-  leg(k.ln,k.toeN,near); arm(k.an,near);
-  return k;
-}
-
-/* ----- the six exercises ----- */
-function bridgePose(h){
-  var L=SEG.torso, run=Math.sqrt(L*L-h*h);
-  return mk({ hx:.52+run, hy:.115+h, th:Math.atan2(-run,-h)/RAD, hd:-82, nx:1.42, ny:.10, fx:1.50, fy:.10 });
-}
-var POSE_STAND = mk({ hx:.86, hy:.90, nx:.90, ny:.07, fx:.80, fy:.07 });
-var CHAIR_HANDS = function(){ return { nx:1.10, ny:1.0, fx:1.15, fy:1.03 }; };
-
-var SCENES = {};
-
-SCENES.calf = { cx:1.05, kneePref:[1,.2], elbowPref:[-.3,-1], hands:CHAIR_HANDS,
-  back:function(c,T){ chair(c,T,1.10); },
-  segs:[
-    { d:.6, h:.5, label:'Stand tall, hold the chair', pose:POSE_STAND },
-    { d:1.4, label:'Rise slowly onto your toes', pose:mk({ hx:.86, hy:.98, nx:.90, ny:.15, na:-35, fx:.80, fy:.15, fa:-35 }) },
-    { d:0, h:.9, label:'Pause at the top', pose:mk({ hx:.86, hy:.98, nx:.90, ny:.15, na:-35, fx:.80, fy:.15, fa:-35 }) },
-    { d:1.8, label:'Lower slowly', pose:POSE_STAND }
-  ] };
-
-SCENES.bridge = { cx:1.0, kneePref:[0,1], elbowPref:[0,1],
-  hands:function(p,sh){ return { nx:sh.x+.5, ny:.075, fx:sh.x+.55, fy:.078 }; },
-  back:function(c,T){ mat(c,T); },
-  segs:[
-    { d:.5, h:.7, label:'Lie on your back, knees bent', pose:bridgePose(0) },
-    { d:1.5, label:'Lift your hips', pose:bridgePose(.36) },
-    { d:0, h:1.0, label:'Squeeze and hold', pose:bridgePose(.36) },
-    { d:1.8, label:'Lower slowly', pose:bridgePose(0) }
-  ] };
-
-(function(){
-  var ST=mk({ hx:.66, hy:.90, nx:.72, ny:.07, fx:.64, fy:.07 });
-  var SIT=mk({ hx:.66, hy:.49, nx:1.08, ny:.07, fx:1.16, fy:.07 });
-  SCENES.wall = { cx:1.05, kneePref:[1,.3], elbowPref:[-.3,-1],
-    hands:function(p,sh){
-      var u=clamp01((.90-p.hy)/.41);
-      return { nx:lerp(sh.x+.06,sh.x+.52,u), ny:lerp(sh.y-.55,sh.y-.03,u),
-               fx:lerp(sh.x+.11,sh.x+.57,u), fy:lerp(sh.y-.53,sh.y-.01,u) };
-    },
-    back:function(c,T,p){ wall(c,T,.55,T.W); },
-    segs:[
-      { d:.6, h:.5, label:'Stand with your back on the wall', pose:ST },
-      { d:1.8, label:'Slide down slowly', pose:SIT },
-      { d:0, h:5, count:true, label:'Hold for 5 seconds', pose:SIT },
-      { d:1.6, label:'Press up and stand tall', pose:ST }
-    ] };
-})();
-
-(function(){
-  var f={ nx:1.24, ny:.07, fx:1.28, fy:.07 };
-  function P(o){ for(var k in f) o[k]=f[k]; return mk(o); }
-  var SEAT=P({ hx:.90, hy:.545, th:6 });
-  var LEAN=P({ hx:.98, hy:.62, th:32 });
-  var STAND=P({ hx:1.18, hy:.90, th:0 });
-  var BACK=P({ hx:1.02, hy:.66, th:26 });
-  SCENES.sts = { cx:1.0, kneePref:[1,.4], elbowPref:[-.3,-1],
-    hands:function(p,sh){ return { nx:sh.x+.22, ny:sh.y-.32, fx:sh.x+.25, fy:sh.y-.30 }; },
-    back:function(c,T){ chair(c,T,.62); },
-    front:function(c,T,p,k){
-      // resistance band above the knees
-      [[k.lf,'#B8651A'],[k.ln,'#F28C28']].forEach(function(q){
-        var l=q[0], bx=k.hip.x+(l.mx-k.hip.x)*.72, by=k.hip.y+(l.my-k.hip.y)*.72;
-        var dx=l.mx-k.hip.x, dy=l.my-k.hip.y, n=Math.hypot(dx,dy), nx=-dy/n, ny=dx/n;
-        seg(c,T,bx+nx*.085,by+ny*.085,bx-nx*.085,by-ny*.085,.035,q[1]);
-      });
-      // 1.5–2 kg bottle held at the chest
-      var hx=k.an.ex, hy=k.an.ey;
-      seg(c,T,hx,hy-.10,hx,hy+.07,.075,'#4FA6D6');
-      seg(c,T,hx,hy+.09,hx,hy+.115,.04,'#F4F4F4');
-      seg(c,T,hx-.012,hy-.08,hx-.012,hy+.05,.02,'#A6DAF2',.8);
-      ball(c,T,hx,hy,.042,'#2E7360','#8ED3BC');
-    },
-    segs:[
-      { d:0, h:.7, label:'Sit tall, band above knees, bottle at chest', pose:SEAT },
-      { d:1.0, label:'Lean forward slightly', pose:LEAN },
-      { d:1.0, label:'Stand up fully', pose:STAND },
-      { d:1.0, label:'Sit down slowly', pose:BACK },
-      { d:.9, label:'Sit down slowly', pose:SEAT }
-    ] };
-})();
-
-(function(){
-  var A=mk({ hx:.96, hy:.90, nx:1.00, ny:.07, fx:.90, fy:.07 });
-  var B=mk({ hx:.96, hy:.90, nx:1.20, ny:.30, fx:.90, fy:.07 });
-  var C=mk({ hx:1.04, hy:.90, th:6, nx:1.40, ny:.25, fx:1.00, fy:.07 });
-  var D=mk({ hx:1.24, hy:1.00, th:8, nx:1.42, ny:.25, fx:1.10, fy:.30 });
-  var E=mk({ hx:1.46, hy:1.08, nx:1.48, ny:.25, fx:1.40, fy:.25 });
-  var F=mk({ hx:1.44, hy:1.00, nx:1.48, ny:.25, fx:1.20, fy:.38 });
-  var G=mk({ hx:1.34, hy:.86, th:6, nx:1.48, ny:.25, fx:1.12, fy:.07 });
-  var H=mk({ hx:1.16, hy:.90, nx:1.24, ny:.36, fx:1.12, fy:.07 });
-  var I=mk({ hx:1.02, hy:.90, nx:1.06, ny:.07, fx:.98, fy:.07 });
-  SCENES.step = { cx:1.25, kneePref:[1,.4], elbowPref:[-.3,-1],
-    hands:function(p,sh){ return { nx:sh.x+.08, ny:sh.y-.53, fx:sh.x+.12, fy:sh.y-.51 }; },   // hands free, not holding the rail
-    back:function(c,T){ rail(c,T,1.30); box(c,T,1.34,0,1.80,.18,'#8AA0A8','#B0C4CB','#6F858D'); },
-    segs:[
-      { d:.6, h:.4, label:'Stand tall close to the rail', pose:A },
-      { d:.8, label:'Lift one foot toward the step', pose:B },
-      { d:.7, label:'Place your whole foot on the step', pose:C },
-      { d:.9, label:'Push through your heel', pose:D },
-      { d:.7, h:.5, label:'Stand tall on the step', pose:E },
-      { d:.8, label:'Step down slowly', pose:F },
-      { d:.7, label:'Lower your foot to the floor', pose:G },
-      { d:.8, label:'Bring the other foot down', pose:H },
-      { d:.6, h:.3, label:'Stand tall on the floor', pose:I }
-    ] };
-})();
-
-
-// Step-downs (part 2): the slow, controlled lowering is the exercise.
-(function(){
-  var S0=mk({ hx:1.16, hy:1.08, nx:1.20, ny:.25, fx:1.12, fy:.25 });                      // standing tall on the step
-  var S1=mk({ hx:1.20, hy:.98, th:5, nx:1.20, ny:.25, fx:1.56, fy:.36 });                 // other foot lifted forward over the edge
-  var S2=mk({ hx:1.28, hy:.84, th:8, nx:1.20, ny:.25, fx:1.60, fy:.07 });                 // foot tapped down on the floor, standing knee bent
-  SCENES.stepdown = { cx:1.25, kneePref:[1,.4], elbowPref:[-.3,-1],
-    hands:function(p,sh){ return { nx:sh.x+.08, ny:sh.y-.53, fx:sh.x+.12, fy:sh.y-.51 }; },   // hands free, not holding the rail
-    back:function(c,T){ rail(c,T,1.30); box(c,T,1.0,0,1.46,.18,'#8AA0A8','#B0C4CB','#6F858D'); },
-    segs:[
-      { d:.6, h:.5, label:'Stand tall on the step, rail close by', pose:S0 },
-      { d:1.0, label:'Lift one foot forward over the edge', pose:S1 },
-      { d:2.2, label:'Lower it slowly toward the floor', pose:S2 },
-      { d:0, h:.5, label:'Tap the floor lightly', pose:S2 },
-      { d:1.0, label:'Push back up onto the step', pose:S1 },
-      { d:.8, label:'Stand tall on the step', pose:S0 }
-    ] };
-})();
-
-(function(){
-  var LN=mk({ hx:.86, hy:.90, nx:.66, ny:.30, na:-30, fx:.80, fy:.07 });   // one foot lifted behind, standing on the other leg
-  var free=function(p,sh){ return { nx:sh.x+.10, ny:sh.y-.52, fx:sh.x+.14, fy:sh.y-.50 }; };   // hands free, chair just beside you
-  var chairBack=function(c,T){ chair(c,T,1.10); };
-  // Full demo: lift one foot, hold steady on that ONE leg for the whole time, then lower it.
-  SCENES.balance = { cx:1.05, kneePref:[1,.2], elbowPref:[-.3,-1], hands:free, back:chairBack,
-    segs:[
-      { d:.6, h:.5, label:'Stand tall, chair close by', pose:POSE_STAND },
-      { d:1.0, label:'Lift one foot slightly', pose:LN },
-      { d:0, h:60, count:true, label:'Hold steady on this same leg', pose:LN },
-      { d:1.2, label:'Lower your foot gently', pose:POSE_STAND }
-    ] };
-  // During the timed hold: lift once, then stay on the same leg until the time is up.
-  SCENES.balancehold = { cx:1.05, kneePref:[1,.2], elbowPref:[-.3,-1], hands:free, back:chairBack,
-    segs:[
-      { d:0, h:.4, label:'Stand tall, chair close by', pose:POSE_STAND },
-      { d:1.2, label:'Lift one foot slightly', pose:LN },
-      { d:0, h:3600, label:'Hold steady', pose:LN }
-    ] };
-})();
-
-// Rest: the figure simply stands still and relaxed, so it is clear this is a break.
-SCENES.rest = { cx:1.05, kneePref:[1,.2], elbowPref:[-.3,-1],
-  hands:function(p,sh){ return { nx:sh.x+.04, ny:sh.y-.54, fx:sh.x+.08, fy:sh.y-.52 }; },
-  segs:[ { d:0, h:10, label:'Rest — breathe and relax', pose:POSE_STAND } ] };
-
-Object.keys(SCENES).forEach(function(id){
-  var s=SCENES[id]; s.total=0;
-  s.segs.forEach(function(g){ s.total += g.d+(g.h||0); });
-});
-
-SCENES.calf.thumbT=2.9; SCENES.bridge.thumbT=3.1; SCENES.wall.thumbT=4.0;
-SCENES.sts.thumbT=1.7; SCENES.step.thumbT=4.3; SCENES.stepdown.thumbT=4.5; SCENES.balance.thumbT=3.5;
-
-// Small still image of an exercise, drawn with the same figure as the animated demo.
-var THUMBS = {};
-function thumbURL(id){
-  if(THUMBS[id]!==undefined) return THUMBS[id];
-  var url='';
-  try{
-    var sc=SCENES[id], c=document.createElement('canvas');
-    c.width=320; c.height=256;
-    renderScene(c.getContext('2d'),320,256,sc,poseAt(sc,sc.thumbT||0).pose,1.12);
-    url=c.toDataURL('image/png');
-  }catch(err){}
-  THUMBS[id]=url;
-  return url;
-}
-
-// Change how long a demo holds its counted pose (used so the balance demo matches your Settings).
-function setHold(id,seconds){
-  var sc=SCENES[id]; sc.total=0;
-  sc.segs.forEach(function(g){ if(g.count) g.h=seconds; sc.total += g.d+(g.h||0); });
-}
-
-function poseAt(sc,t){
-  var segs=sc.segs; t=t%sc.total;
-  for(var i=0;i<segs.length;i++){
-    var g=segs[i], span=g.d+(g.h||0);
-    if(t<span || i===segs.length-1){
-      var prev=segs[(i+segs.length-1)%segs.length].pose, p=g.pose, count=null;
-      if(g.d>0 && t<g.d) p=lerpPose(prev,g.pose,smooth(t/g.d));
-      if(g.count && t>=g.d) count=Math.max(1,Math.ceil((g.h||0)-(t-g.d)));
-      return { pose:p, seg:g, count:count };
-    }
-    t-=span;
-  }
-}
-
-function renderScene(c,W,H,sc,pose,zoom,mirror){
-  var z=zoom||1, s=Math.min(W/2.6,H*.82/1.85)*z, gy=H*(zoom?.945:.9);
-  if(mirror){ c.save(); c.translate(W,0); c.scale(-1,1); }
-  var T={ W:W, s:s, x:function(x){ return W/2+(x-sc.cx)*s; }, y:function(y){ return gy-y*s; } };
-  floorAndBg(c,T,W,H);
-  if(sc.back) sc.back(c,T,pose);
-  var k=drawFigure(c,T,pose,sc);
-  if(sc.front) sc.front(c,T,pose,k);
-  if(mirror) c.restore();
-  return k;
-}
-
-// A round "pause" badge in the corner, shown while the figure is frozen between reps.
-function drawPauseIcon(c,W,H){
-  var r=Math.min(W,H)*.085, x=W-r*1.7, y=r*1.7;
-  c.save(); c.globalAlpha=.78; c.fillStyle='#12292D'; c.beginPath(); c.arc(x,y,r,0,Math.PI*2); c.fill();
-  c.globalAlpha=1; c.fillStyle='#FFFFFF';
-  c.fillRect(x-r*.40,y-r*.44,r*.27,r*.88); c.fillRect(x+r*.13,y-r*.44,r*.27,r*.88);
-  c.restore();
-}
-
-function DemoPlayer(canvas,capEl,exId,mirror){
-  this.c=canvas; this.cap=capEl; this.sc=SCENES[exId]; this.mirror=!!mirror;
-  this.ctx=canvas.getContext('2d');
-  this.speed=1; this.playing=true; this.t=0; this.raf=0; this.last=0; this.lastCap=null; this.pauseIcon=false;
-}
-DemoPlayer.prototype.fit=function(){
-  var dpr=Math.min(window.devicePixelRatio||1,2);
-  var w=Math.round(this.c.clientWidth*dpr), h=Math.round(this.c.clientHeight*dpr);
-  if(w>0 && (this.c.width!==w || this.c.height!==h)){ this.c.width=w; this.c.height=h; }
+/* ============ SETTINGS: where the exercise tools live (the tools themselves are NOT copied here) ============ */
+const CFG = {
+  owner: 'sgkjeajk',
+  repo:  'digital-tools',
+  dir:   'exercise',
+  base:  'https://sgkjeajk.github.io/digital-tools/exercise/'
 };
-DemoPlayer.prototype.frame=function(){
-  this.fit();
-  if(!this.c.width) return;
-  var st=poseAt(this.sc,this.t);
-  renderScene(this.ctx,this.c.width,this.c.height,this.sc,st.pose,0,this.mirror);
-  if(this.pauseIcon) drawPauseIcon(this.ctx,this.c.width,this.c.height);
-  if(this.cap){
-    var text=st.seg.label+(st.count!==null?' — '+st.count:'');
-    if(text!==this.lastCap){ this.lastCap=text; this.cap.textContent=text; }
-  }
+/* Nicer names, descriptions and pictures for tools we already know. Any other .html file found in the folder is
+   added automatically with a title read from that tool's own page. Matching is by file name, ignoring capitals. */
+const IMG = {leg:'data:image/webp;base64,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', back:'data:image/webp;base64,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', knee:'data:image/webp;base64,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', gen:'data:image/webp;base64,UklGRmIPAABXRUJQVlA4IFYPAAAwfQCdASrQAiwBPmEwlUgkIyIhIbHpSIAMCWdu7mDfAZX8buR86rdpOp/2nK1dg+FPkM0D/3+V/+N90vzh/bD2X+YH+nn61+t161vMJ+wX7Fe816ev8B9gHyAf2H/VdbF6AHlo/t78M37dfux7QH//1s7z5/mO3rI1z90dzL1a2388Ae7ZpDpm/2Aewb67EBIykygs5BUWmi00Wmi00Wmi0zhbNcG95VrTRaZtH55zZx3OO5x3OO5x3OO5xwwkY5zOJ/IKi0vKgK3SXxr5hWEcdotNFpotNFpopuul2EQgc2boDfE83+1ZjUA1VakgIl2osgITAMQ17QEzZBTGnwDmzjucdzjuRGZ9502HOHciM87oaG7TPsDTdC488b1YHcgJjCcuROGhm7CMT+MyujJbx1D+eNteB0BU33vHxsfpSK+jaV1m0sUw2cbqhgmfDpDgb3JCJ5HMXjUkxr+YDWDKEM3YRiegYHjJb5321e03MK/N99Jfd0kjYZLhDXIsf0E/kE1BA+6UQrSsA6D1lTt2S5vw7mdRdEe8pArdJIqADp0+y+k72g8ZL0wVuHmpIyFV91Pk3dJNgMn5TZf6cuK5OTtjdLsi3w0YBdZ2CpRr7HK7gEaASKPh6uZ7A1JjeE0371YDxkt4/TRRUrdFVJ/f8jlTli38uWbDaI9xaV8GepiaNmvPSd5lS+gzjXvQAeEgoKetXW3RcqF6p2aIlvVtfGHqyUqVwZtKEr3qJu5Q5U6yx0ipIzCA/0xNNOxOsvX0rW1V4/rtxnFFGumDBBtOVkwqvXtwZReDKLnNDZV8bKvjZV8bKvjZV8bKvjdYLaCvHqr2f5uz/UTd0nB6p2g5M14sdvUrqvPjFmuMN7zE5+CTv1kKp8VzztjFKZ42G515F+pF/GT5Dl7yF/72e4AFveqsEhDN2EWOk4kDnJTTOOjNHZ5Q2pFcA0A0RxD8wgNCoUcO6Ubm00Wmi0uHVcPei0tDpW/nivimV38/zZx3OO5yT2mjVfl7aRGosdGjnuC6bCMT+QVFpao+IBQsRbREH3xP5BUWmi00Wmi0boLEZm7CMT+QVFp6wYl2KatDN2EYn8f9SvmMPVWO3Ng3U5zGHqyUqVwZtKErgzaUJXBm0oSuDNo6/BWFpsvQUi9ErVtedd2sIxP5BUUGzW7TIa1yTOJlfEyviZXxMr4m5azG8IrqBKIdk2EypmLCLyyfybTRQRRmTbnGauICFj460dHEbuXyDI3+006VwZtKErgzaUJXBm0oStwRqRMPK/Ok1SJ5y+jFSrEGaAm7CMT+QVFpotTem66Ml6dyIzzuhoM+Wozrm00Wmi00Wmi0z+faDxuYAAD+/mdu2Z+GauRP/jBPqYX4XoFT56VMybbcw6D5CHewMYT4Hb7ahZijjWffeWyIafam92IG6gd0eMAsXKy8xFuB7Aw3sLmvgR52+9dr853EclHU5V4dgtRfJ4lqsANH3JXIw5ADOsDxJUxWUcKGIEvxvEnFmKiwJXlPMCBYeytGvlLPN+KzGAabxbseLVs0Bb8Te51v+7JtWcJOO5q/DP4kSeuUDCbZiCh0BbxwNuoRlM02DiUKbUgcBOmuaXjPQRNIEavGWAuf0HY2wtaWNZPICTNT7s9Ek9UWJqZ+JN6oW8w5Zwxbk90Fv+mbghoJbaGLvTiJghMz0lXNB3y8dzYtdiUlbr08IRB0NsXR3sUPPnDs2Zyv9tMAzGEHZbkzeUQRyHhoI9de2MIvYlNcfRNJp/23//6jTwH6hd6mR3AxXWjHh0QH2aM4Skx76FsStxXb7czr+XmRb/ZVylzV9FI7/756jhdtBjm5vR5YmBPjnWstqCnMvIgwaWk9FvcCFfIleiXG2+f+iE1yx72FRbMBYjcBzhq7mtLRtbcFpEh3Z5saDr/2Tn6jmgSpd6ls7Wy8Bh6ISru/uT0G1FQFK15tiORBb6adAolfUnihqwGALLbFI5vcGxyYTSs1TvRD8Aa1YCmUIgphjbLXOKmIq90eFBv9+41KwBzXp18a+X6CgG0jgIPHox5ghHUxc7S2m5PZTp23hwZ8jsZMcbvvsjwv+67OwcsNd3JrHqjdppZrHGZhjU9TT7Nz7h3436QkVwIfwizsWI96ihkL5Ia/8erizWO2US+ip9QZEpDRXO552m+8OCewjQysmEupD6m+CT67KedUWzoSXCBzhe6Pl9BEXHmm0qrtZ4P0pw7DqX/64OOukWZlNuGnHzuW+QniPZsd6DEo6iLWq8R8DkY3tqLBKXPpIDodocnPmMRPeseOx5iPfzDCZltIPv61kmzH6/mx/4GPx0vyisVrrbGMAFGTb+30t+K6Xl5hqDet9b+FrCrlKy0/YeuHoTMrPLrZLdNF0TQYkeO0FRBv8K2FG62ucvX7VTUJEamXCyT4sBrhhknNBEDgRo91eQGRKxYMABO615q6mv6PioXsTx0ZMdj6GL7f4DDkhkNXEtX1jQgp4uWKrehfqj3hxnW3cfIs1Q4iursEJp2J5+OLi0Z7nsKAY3mJlltcwdvj44qQgMkxqS/ZTqYq8WNWNhOpTbBXsMIuvipTSCas9P2tZmxfLm5W6AUfuYW/dcwf6WYUQa9vp9ovRZHBchpEeTgsdSR/XANd8sZFsvbD7mTea+V/c2Jz3viPX1GZWGxEmbzFKsIUTndrfXWVE5mI9spWvrV2upt9hSCOskHk55MjkG7bdWDfqBT9BMLpPMlcPMuykKbHkoiD9HO7sNIznHf6E/WwFJcNcvwpBFyPfDMoPHXZfVAqIVVZmkZ2C9v7aSVvsP3v57u9AHRCf4PRSdkRKWDYgWZPADLx027WpJEUAw9dNu73kMcmoHfYl6CDd+TYQp/jzKxatYCrY0k1qDTduZ0JgZsl3aH8fF7n32g3wL6ZgsKFN1GN6om3I2VxFeYI4mVHzsBx7hIMFsYsCFOkTfbigqZBu9zSNr6+4Fuek3OfgEPXkacpk5X7q6nvfj5tRUxChTzGa8A0YU6wehR5MDJZHalkJ0AboR3x6JuxAi3gQPNWZfYK2M1tix8sYIg2lFKIHy320EgdTCEgxHgaAr1lfdOZQt0HQOqwK31YQz5IdA+dFlJNmMAsjOoS6TYwvPXVxooo/q77+PG67IK8g4b9+Oyi7lEyokPJdbePNfT1LrRcm8zombJ2DTZE1sJ5WpmJ2+POTtzfJyyc9Bi353KVKZs+W7dZYE3N9cUTJIGqA0TxPITvm9CoA2butGIZe8rvMnNhzyihwHLXLwEmjXtv+VK5PStzROHXwwaGFq4R2syUMLUppIomMJl7ZDAnIyZ62yyODDmLe7gnG4pH6JFH0SfNg8s/F5X4cWx4jl0ZpfvCWzBtlkZ+bCqpjKP0xpmraefjJI2fCUYdWENFZDeommAAeIGNsHyLoypEY7+ObnUU4+tlgWtcAFZ5Sa4AKzw8nnf/9iiEke52fsa4Wp5nVKmQfemqqDcurDrXJWISQyLLQ3zbs7Lka2agvfVAwJbX14NwA1gUmKIwdPtJ7Vi3oYjY1hxmmm6ZycorGnRSTh/aKauVIaBajcIiEl119JDujKWD/7nU9O4PlwDUbwyk+6QW9zSYroYDhtqJ9I+tFDmL9kownqgmZwYcts17yivOMM/jH2NGur3kW+0rLal/G5vAh6bpZdqoHhP212QkbUV8VOknvZIeDXkop6K8lGRFFuMuTGlWmyNGeqVElMmftd4W9VRVKmX9NOhIh8VydZBr6+ISoDJfLXI4rk+3HOdqaFTXKpcHTg8UjHa81ccHXS3/HIu+xRjMfR3PvOSN4og3vu+dDwoZgRk4fKTu5eCTGZtOZMtKizPClctJ9gsVjgZrFOI48wzZkp+NX89IUzv0ZDF4j4jEYEEOzmcBmieVfplR4VJm9DQVt3c5TOXuDMx3gFmFubB4ZxII94XOSwB7JbZSxbT3FJhmqeI6noKD5cRoBKfyvMsZyRXIfQhyz4DQvla+nNZToOqvE/WVNiSbsymH1/AJO0nAFtGzWIGj73KjwHkqcZEptL86j7LLI/bA15REtzFroB/TTIPO/wLqXl4QVuCFxaXLrhDGnrvoOCNbpC3uKChShc8l0FKKwljhI6RAEXEzt0pIjHY2M3kEwvsSScjd/nYWnSaVnO5Y/TIDEU6rN577o3qX5JJjvRbxkuXJbwkjBozf2q2eQEWWeYaMs3QcEnl8kgZUTLBL8kpl9AMSmJjeH10wMK+m2WoOPqvY6sXxruCMhAVFGEjV4lwE5FqkOiB6WD/gvZq/RvEMk/mHcxPSc5AR9QxqvPm7sWxVD0RokZKcAXkh/Et6Cfjs9WfijkVkbjfF8rmlKzmb1KnPf2OiqKCQLHXzzarxR+Nf6HW2/A6gGAMk7+DayavvZfus8SwA4/hEKZQNd3UgA7NmdCX5GgE9y/DrdftTTT8kAPFGPJt+NwxU0Ni3Y0A0tSK5jXQRhw9YxsbSOEE4IcMhOTNPOjK2hz7UfLK793aAwRoG6rkqcOIYXxQGarjMwq/l/GBYVpnugWVJuxWsBIBu3i8ZrLWyPL9xyk9KLD/eEl77uLL7+E+CegEqpL4y/LTzTxXykkPpqrlYcwVbCjLFK5mR1YCdCCp0IFmS4d2fi2QlKXiCTM+uV8OyPgF2Mt8xx6tWoi1ALtjSg+enw7HoyVtYZ9Kmb9/B/1kiIptwNo1wx1Gnt9vqv5XG31l4/guTz88FOuuISfhX6fD1co0d+ABx/2ZYC5MTJBUYoTIKmv/9diVio5VFlVGhNdztRw1HjXmoaCgR5eSFlgyN+jX/8NzvaodNDIQAyuah1c1U4tt6DbIEvuIkgLkskwcWkf0l4xz11S3440y8nQWyfSH87AFEzlxgIVV+hWePQyAJq1ICOjnksYzPN6KylUEplB6yyAAAAi4y69Rr5twuXHLpyqQKweY1STMe3JLCrGwE0eXje+9t8oJea5yGG3KFrKrteuMuZCbq6pu7acHnKCXsbmQ3YUOM+E+REC0cgJ9ol+cdzZm/Sc22cw/ICf0/FH8FnPXmFRWWxquwc2Jg8l2IRiG2ZvEy9A/OXu0ZZAMFagbTTyHICbRqRYjORT19nRNU2+vaKH0jLyTVhd2NwJR84X//xxwWd8RgLv5CiyU52NBhtPGRjYuqOyfeTjZ8ipgtXKi4Dwvuwc0Ri6gMrw0YoLgMCyjgLqnOLhKuVlozwROAQx8YbxRTLWOiXxZELYchg2KypwuWcqcAAAAAAA=='};
+const KNOWN = {
+  'legstrengthbalance.html': {name:'Leg Strength & Balance Coach', tag:'Strength · Balance', c:'#17B96B', soft:'#E4F8EE', art:'leg',
+    desc:'A guided exercise tool supporting leg-strength and balance exercises with configurable routines, demonstrations, spoken guidance and accessibility settings.',
+    chips:['Configurable routines','Demonstrations','Spoken guidance','Display settings']},
+  'lowerbackhipmobility.html': {name:'Lower Back & Hip Mobility Coach', tag:'Lower back · Hip', c:'#7C4DDB', soft:'#F0EAFF', art:'back',
+    desc:'A guided routine of lower back and hip mobility exercises. Each exercise is held for 20 seconds, 3 sets. These settings can be adjusted in the tool’s Settings.',
+    chips:['Guided routine','20 sec × 3 sets','Adjustable settings','Demonstrations']},
+  'kneesupportstrength.html': {name:'Knee Support Strength Coach', tag:'Knee · Strength', c:'#F59A23', soft:'#FFF1DE', art:'knee',
+    /* TEMPORARY: the kneesupportstrength.html in the exercise folder is currently a copy of the Digital Tools home page, so this card opens the original knee tool instead.
+       Once the real knee tool file is uploaded to the exercise folder, delete the next line and the card will open that file. */
+    href:'https://pages.sharable.link/q850ldwm',
+    desc:'A guided exercise tool designed to make a knee-strengthening routine easier to understand and follow.',
+    chips:['Step-by-step routine','Clear instructions','Demonstrations','Simple guided format']}
 };
-DemoPlayer.prototype.start=function(){
-  var self=this; this.last=performance.now(); this.frame();
-  function loop(now){
-    var dt=Math.min((now-self.last)/1000,.1); self.last=now;
-    if(self.playing) self.t+=dt*self.speed;
-    self.frame();
-    self.raf=requestAnimationFrame(loop);
-  }
-  this.raf=requestAnimationFrame(loop);
-};
-// Swap the animation on the fly (used to show a standing figure during rest between reps).
-DemoPlayer.prototype.setScene=function(id,mirror){ this.sc=SCENES[id]; this.mirror=!!mirror; this.t=0; this.lastCap=null; };
-DemoPlayer.prototype.stop=function(){ cancelAnimationFrame(this.raf); this.raf=0; };
-/*ENGINE-END*/
+const ORDER = ['legstrengthbalance.html','lowerbackhipmobility.html','kneesupportstrength.html'];
+const EXTRA_COLOURS = [['#2775E6','#E6EFFF'],['#E94B87','#FFE6F0'],['#0E9B91','#DFF5F2'],['#F2B33D','#FFF4D6']];
 
+const $ = id => document.getElementById(id);
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!==undefined) e.textContent=text; return e; }
 
-/* ---------- Exercise data ---------- */
-// work = default seconds per set (estimate), rest = default seconds between sets.
-var EXERCISES = [
-  { id:'calf', numLabel:'1', name:'Calf raises', emoji:'🦶', sets:3, reps:15, perRep:3, rest:5,
-    cue:'Hold a chair or wall. Rise slowly onto your toes, then lower slowly.',
-    steps:['Stand tall behind a sturdy chair and rest your hands on the back.','Rise slowly onto your toes.','Pause for a moment at the top.','Lower your heels slowly to the floor.'],
-    tip:'Keep your knees soft and look straight ahead.',
-    demo:'calf raises exercise for seniors' },
-  { id:'bridge', numLabel:'2', name:'Hamstring bridges', emoji:'🛏️', sets:3, reps:15, perRep:4, rest:5,
-    cue:'Lie on your back, knees bent. Lift your hips, squeeze, then lower slowly.',
-    steps:['Lie on your back with your knees bent and feet flat on the floor.','Press through your heels and lift your hips.','Squeeze and pause at the top.','Lower slowly back to the mat.'],
-    tip:'Lift only as high as feels comfortable and keep your feet flat.',
-    demo:'hamstring bridge exercise for seniors' },
-  { id:'wall', numLabel:'3', name:'Wall sits', emoji:'🧱', unit:'Hold', holdSec:5, sets:3, reps:15, perRep:6, rest:5,
-    planExtra:', hold 5 seconds each', shortExtra:', hold 5 sec',
-    cue:'Back flat on the wall, slide down a little. Hold 5 seconds, then stand tall.',
-    steps:['Stand with your back against a wall and your feet a little way forward.','Slide down slowly until your knees bend, as far as feels comfortable.','Hold for 5 seconds and keep breathing.','Press through your feet and slide back up.'],
-    tip:'Keep your back flat on the wall and your feet flat on the floor.',
-    demo:'wall sit exercise for beginners seniors' },
-  { id:'sts', numLabel:'4', name:'Sit-to-stand with band and bottle', emoji:'🪑', sets:3, reps:15, perRep:4, rest:5,
-    planExtra:', band above knees, 1.5–2 kg bottle', shortExtra:' with band + bottle',
-    cue:'Hold the bottle at your chest. Stand up fully, then sit down slowly.',
-    steps:['Sit tall near the front of a sturdy chair, band above your knees, bottle held at your chest.','Lean forward slightly and press your knees gently out against the band.','Stand up fully.','Sit back down slowly and with control.'],
-    tip:'Keep your knees from drifting inward and use both hands on the bottle.',
-    demo:'sit to stand exercise resistance band seniors' },
-  { id:'step', numLabel:'5a', name:'Step-ups (part 1 of 2)', sides:['Left leg','Right leg'], emoji:'🪜', sets:3, reps:8, perRep:6, rest:5,
-    cue:'Stand close to a rail or wall, just in case, but do not hold it. Step up, then step back down. Do all your sets with your left leg leading, then repeat with your right leg.',
-    steps:['Stand close to a sturdy rail or wall, just in case, but do not hold it.','Step up with the working leg: left leg first, then right leg.','Push through that heel and bring the other foot up.','Step back down. Finish all your sets on one leg, then switch legs.'],
-    tip:'Use a low, stable step and put your whole foot on it. Reach for the support only if you feel unsteady.',
-    demo:'step ups exercise for seniors' },
-  { id:'stepdown', numLabel:'5b', name:'Step-downs (part 2 of 2)', sides:['Left leg','Right leg'], emoji:'🪜', sets:3, reps:8, perRep:6, rest:5,
-    cue:'Stand on the step, close to a rail or wall but not holding it. Lower the other foot slowly to the floor, tap it, then push back up. Do all your sets standing on your left leg first, then your right leg.',
-    steps:['Stand tall on a low, sturdy step, close to a rail or wall for safety but not holding it. The leg on the step is the working leg: left leg first, then right leg.','Lift your other foot forward over the edge of the step.','Lower it slowly toward the floor, taking about 3 seconds, and bend the knee of the leg on the step.','Tap the floor lightly, then push back up onto the step.'],
-    tip:'The slow lowering is the exercise, so take your time. Keep the knee of the leg on the step in line with your toes, and reach for the support only if you feel unsteady.',
-    demo:'step down exercise slow controlled seniors' },
-  // Timed exercise: "reps" = seconds held on each leg, "sets" = rounds (each round is both legs).
-  { id:'balance', numLabel:'6', name:'Single-leg balance', emoji:'⚖️', sets:1, reps:60, perRep:1, rest:5,
-    setLabels:['Left leg','Right leg'], holdScene:'balancehold',
-    cue:'Stand close to a sturdy chair, just in case, but do not hold it. Lift one foot slightly off the floor and hold it there on the same leg for the full time, then switch legs.',
-    steps:['Stand tall close to a sturdy chair or wall, just in case, but do not hold it.','Shift your weight onto one leg and lift the other foot slightly off the floor.','Hold steady on that same leg for the full time.','Lower your foot gently, rest, then repeat on the other leg.'],
-    tip:'Keep the chair within arm\'s reach and only lift as high as feels safe. Reach for it if you feel unsteady.',
-    demo:'single leg balance exercise for seniors' }
-];
-var READY_SECONDS = 5;
-var KEY = 'legExerciseCoach.v2', OLD_KEY = 'legExerciseCoach.v1', HIST_KEY = 'legExerciseCoach.history';
-var OLD_REPS = { balance:30 };   // previous default (seconds per leg)
-var OLD_REST = { calf:30, bridge:30, wall:30, sts:45, step:45, stepdown:45, balance:10 };   // previous defaults
-
-/* ---------- State ---------- */
-function todayStr(){
-  var d = new Date();
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function prettify(file){
+  return file.replace(/\.html?$/i,'').replace(/[_-]+/g,' ').replace(/([a-z])([A-Z])/g,'$1 $2')
+    .replace(/\s+/g,' ').trim().replace(/\b\w/g, m=>m.toUpperCase());
 }
-function defaults(){
-  var s = { enabled:{}, sets:{}, reps:{}, rest:{}, repRest:{}, history:{}, histTime:{}, between:20, sound:true, voice:false, size:'normal', contrast:false,
-            done:{ date:todayStr(), ids:[] } };
-  EXERCISES.forEach(function(e){ s.enabled[e.id]=true; s.sets[e.id]=e.sets; s.reps[e.id]=e.reps; s.rest[e.id]=e.rest; s.repRest[e.id]=0; });
-  return s;
+function renderCard(t){
+  const a = el('article','tool'); a.style.setProperty('--c',t.c); a.style.setProperty('--soft',t.soft);
+  const img = el('img','tool-img'); img.src = IMG[t.art] || IMG.gen; img.alt=''; img.width=720; img.height=300; a.append(img);
+  const body = el('div','tool-body');
+  body.append(el('p','tag',t.tag), el('h2','',t.name), el('p','desc',t.desc));
+  if(t.chips && t.chips.length){ const ul=el('ul','chips'); t.chips.forEach(c=>ul.append(el('li','',c))); body.append(ul); }
+  const link = el('a','open'); link.href = t.href || (CFG.base + encodeURIComponent(t.file)); link.target='_blank'; link.rel='noopener noreferrer external';
+  link.append(document.createTextNode('Open this tool '));
+  link.insertAdjacentHTML('beforeend','<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>');
+  link.append(el('span','sr','(opens in a new tab)'));
+  body.append(link); a.append(body); return a;
 }
-// Some in-app viewers block or wipe local storage. Detect that so we can warn instead of failing silently.
-var storageOK = (function(){
-  try{ var k='__legcoach_test'; localStorage.setItem(k,'1'); var ok = localStorage.getItem(k)==='1'; localStorage.removeItem(k); return ok; }
-  catch(err){ return false; }
-})();
-try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(err){}   // ask the browser to keep the data
-function readSaved(){
-  try{ var raw = localStorage.getItem(KEY) || localStorage.getItem(OLD_KEY); if(raw) return raw; }catch(err){}
-  try{ if(typeof window.name==='string' && window.name.indexOf('legcoach:')===0) return window.name.slice(9); }catch(err){}   // fallback copy (survives a page reload)
-  return null;
+let selected = null;              /* file name of the chosen routine, or null when nothing is chosen yet */
+let currentList = [];
+const CHEV='<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17335F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+const GRID_ICON='<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E9B91" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>';
+function thumb(t){ const d=el('span','pick-thumb'); if(t){ const i=el('img'); i.src=IMG[t.art]||IMG.gen; i.alt=''; d.append(i); d.style.background=t.soft; } else d.insertAdjacentHTML('beforeend',GRID_ICON); return d; }
+function updatePickBtn(){
+  const t=currentList.find(x=>x.file===selected)||null;
+  const b=$('pick-btn'); b.replaceChildren(thumb(t));
+  const txt=el('span','pick-text'); const v=el('span','',t?t.name:'Select a routine'); v.id='pick-val';
+  txt.append(v, el('small','',t?t.tag:currentList.length+(currentList.length===1?' routine to choose from':' routines to choose from')));
+  b.append(txt); b.insertAdjacentHTML('beforeend',CHEV);
 }
-// Merge history records (from saved data or a backup) into state, ignoring anything invalid.
-function mergeHistory(target,hist,times){
-  var ids = EXERCISES.map(function(e){ return e.id; });
-  function addTo(date,list){
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Array.isArray(list)) return;
-    list.forEach(function(id){ if(ids.indexOf(id)>-1){ var a = target.history[date] || (target.history[date]=[]); if(a.indexOf(id)<0) a.push(id); } });
-  }
-  if(hist && typeof hist==='object') Object.keys(hist).forEach(function(d){ addTo(d,hist[d]); });
-  if(times && typeof times==='object') Object.keys(times).forEach(function(d){
-    var m = times[d]; if(!m || !target.history[d]) return;
-    Object.keys(m).forEach(function(id){ if(target.history[d].indexOf(id)>-1 && /^\d\d:\d\d$/.test(m[id])){ (target.histTime[d]||(target.histTime[d]={}))[id]=m[id]; } });
-  });
-  return addTo;
-}
-function load(){
-  var s = defaults(), p = null;
-  try{
-    var raw = readSaved();
-    if(raw) p = JSON.parse(raw);
-  }catch(err){}
-  if(p){
-    EXERCISES.forEach(function(e){
-      if(p.enabled && typeof p.enabled[e.id]==='boolean') s.enabled[e.id]=p.enabled[e.id];
-      if(p.sets && p.sets[e.id]>=1) s.sets[e.id]=p.sets[e.id];
-      if(p.reps && p.reps[e.id]>=1 && p.reps[e.id]!==OLD_REPS[e.id]) s.reps[e.id]=p.reps[e.id];   // keep only values you changed yourself
-      if(p.repRest && p.repRest[e.id]>=0) s.repRest[e.id]=p.repRest[e.id];
-      if(p.rest && p.rest[e.id]>=0 && p.rest[e.id]!==OLD_REST[e.id]) s.rest[e.id]=p.rest[e.id];   // keep only rests you changed yourself
-    });
-    if(p.between>=0) s.between=p.between;
-    ['sound','voice','contrast'].forEach(function(k){ if(typeof p[k]==='boolean') s[k]=p[k]; });
-    if(['small','normal','large','xl'].indexOf(p.size)>-1) s.size=p.size;
-    if(p.done && p.done.date===todayStr() && Array.isArray(p.done.ids)) s.done=p.done;
-  }
-  // history: { 'YYYY-MM-DD': [exercise ids] }, one entry per exercise per day.
-  // It has its own storage entry and is only ever removed when you delete it.
-  var hobj = null;
-  try{ var hraw = localStorage.getItem(HIST_KEY); if(hraw) hobj = JSON.parse(hraw); }catch(err){}
-  if(hobj && hobj.h && typeof hobj.h==='object'){
-    mergeHistory(s, hobj.h, null);
-  }else if(p){                                               // older saves: history lived inside the main entry
-    var addTo = mergeHistory(s, p.history, p.histTime);
-    if(p.done && p.done.date) addTo(p.done.date, p.done.ids); // exercises marked done before history existed
-  }
-  return s;
-}
-var S = load();
-function save(){
-  var json = JSON.stringify(S);
-  try{ localStorage.setItem(KEY, json); }catch(err){}
-  try{ localStorage.setItem(HIST_KEY, JSON.stringify({ h:S.history })); }catch(err){}
-  try{ window.name = 'legcoach:'+json; }catch(err){}
-}
-
-/* ---------- Helpers ---------- */
-function $(id){ return document.getElementById(id); }
-function esc(t){ return String(t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
-function byId(id){ return EXERCISES.filter(function(e){ return e.id===id; })[0]; }
-// Time is estimated from the reps you choose: reps x an estimated seconds-per-rep for each exercise.
-function isTimed(e){ return !!e.setLabels; }
-function setsOf(e){ return isTimed(e) ? S.sets[e.id]*e.setLabels.length : (e.sides ? S.sets[e.id]*e.sides.length : S.sets[e.id]); }
-// For left/right exercises: all sets on the first leg, then all sets on the second leg.
-function legIndex(e,n){
-  if(e.sides) return Math.min(e.sides.length-1, Math.floor((n-1)/S.sets[e.id]));
-  if(e.setLabels) return (n-1)%e.setLabels.length;
-  return -1;
-}
-function sideOf(e,n){ if(!e.sides) return null; return e.sides[Math.min(e.sides.length-1, Math.floor((n-1)/S.sets[e.id]))]; }
-function repsOf(e){ return S.reps[e.id]; }
-function repRestOf(e){ return isTimed(e) ? 0 : (S.repRest[e.id]||0); }
-// seconds in one set = the reps themselves + any rest you asked for between reps
-function workOf(e){ return repsOf(e)*e.perRep + (repsOf(e)-1)*repRestOf(e); }
-function est(e){ var n=setsOf(e); return n*workOf(e) + (n-1)*S.rest[e.id]; }
-function planText(e){
-  var n=S.sets[e.id], r=S.reps[e.id];
-  if(isTimed(e)) return r+' seconds on each leg'+(n>1 ? ', '+n+' rounds' : '');
-  return n+' '+(n===1?'set':'sets')+' of '+r+(e.sides ? ' on each leg' : '')+(e.planExtra||'')+(repRestOf(e)>0 ? ', '+repRestOf(e)+' sec rest between reps' : '');
-}
-function shortText(e){
-  var n=S.sets[e.id], r=S.reps[e.id];
-  if(isTimed(e)) return r+' sec each leg'+(n>1 ? ' × '+n : '');
-  return n+' × '+r+(e.sides ? ' each leg' : '')+(e.shortExtra||'')+(repRestOf(e)>0 ? ', '+repRestOf(e)+'s between reps' : '');
-}
-function fmtDur(sec){
-  if(sec<60) return sec+' sec';
-  var m = Math.round(sec/60); return 'about '+(m<1?1:m)+' min';
-}
-function clock(sec){
-  sec = Math.max(0, Math.ceil(sec));
-  return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
-}
-function setLabel(e,n){
-  if(isTimed(e)){
-    var k=e.setLabels.length, base=e.setLabels[(n-1)%k], rounds=S.sets[e.id];
-    return rounds>1 ? base+' · round '+(Math.floor((n-1)/k)+1)+' of '+rounds : base;
-  }
-  if(e.sides){ var per=S.sets[e.id]; return sideOf(e,n)+' · Set '+(((n-1)%per)+1)+' of '+per; }
-  return 'Set '+n+' of '+setsOf(e);
-}
-function demoUrl(e){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(e.demo); }
-function freshDone(){ if(S.done.date!==todayStr()) S.done = { date:todayStr(), ids:[] }; }
-function addHistory(id){
-  var k = todayStr(), a = S.history[k] || (S.history[k]=[]);
-  if(a.indexOf(id)<0) a.push(id);
-}
-function isDone(e){
-  var h = S.history[todayStr()];
-  return S.done.ids.indexOf(e.id)>-1 || !!(h && h.indexOf(e.id)>-1);
-}
-// When was this exercise last completed (in a routine or on its own)?
-function lastDoneText(e){
-  if(isDone(e)) return '✓ Done today';
-  var keys = Object.keys(S.history).sort().reverse(), last = null;
-  for(var i=0;i<keys.length;i++){ if(S.history[keys[i]].indexOf(e.id)>-1){ last = keys[i]; break; } }
-  if(!last) return 'Not done yet';
-  var p = last.split('-'), d = new Date(+p[0], +p[1]-1, +p[2]), t = new Date(); t.setHours(0,0,0,0);
-  var days = Math.round((t-d)/86400000);
-  if(days===1) return 'Last done: yesterday';
-  if(days>1 && days<7) return 'Last done: '+days+' days ago';
-  return 'Last done: '+d.toLocaleDateString(undefined,{day:'numeric',month:'short'});
-}
-function selected(){ return EXERCISES.filter(function(e){ return S.enabled[e.id]; }); }
-function totalSeconds(list){
-  var t = 0;
-  list.forEach(function(e,i){ t += est(e); if(i<list.length-1) t += S.between; });
-  if(list.length) t += READY_SECONDS;
-  return t;
-}
-
-function applyDisplay(){
-  var h = document.documentElement;
-  h.classList.toggle('t-large', S.size==='large');
-  h.classList.toggle('t-xl', S.size==='xl');
-  h.classList.toggle('t-small', S.size==='small');
-  document.body.classList.toggle('hc', S.contrast);
-}
-
-/* ---------- Home ---------- */
-function renderHome(){
-  freshDone();
-  $('storeWarn').hidden = storageOK;
-  $('dateLine').textContent = new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
-  var sel = selected();
-  var doneCount = sel.filter(isDone).length;
-  if(sel.length){
-    $('planSum').textContent = sel.length+' of '+EXERCISES.length+' exercises';
-    $('planSub').textContent = fmtDur(totalSeconds(sel))+' including rests'+(doneCount? ' · '+doneCount+' done today':'');
-    $('startAll').disabled = false;
-  }else{
-    $('planSum').textContent = 'No exercises selected';
-    $('planSub').textContent = 'Open Settings to choose today\'s exercises.';
-    $('startAll').disabled = true;
-  }
-  renderResumeCard();
-  var html = '';
-  EXERCISES.forEach(function(e,i){
-    var on = S.enabled[e.id];
-    html += '<li class="card'+(on?'':' off')+'">'+
-      '<div class="card-head"><span class="num" aria-hidden="true">'+(e.numLabel||i+1)+'</span><div>'+
-        '<h3>'+esc(e.name)+'</h3>'+
-        '<p class="meta">'+esc(planText(e))+'</p>'+
-        '<p class="meta">Estimated time: '+fmtDur(est(e))+'</p>'+
-        '<div class="tags">'+
-          '<span class="tag'+(isDone(e)?' done':'')+'">'+esc(lastDoneText(e))+'</span>'+
-          (on?'':'<span class="tag">Not in today\'s plan</span>')+
-        '</div>'+
-      '</div></div>'+
-      '<p class="cue">'+esc(e.cue)+'</p>'+
-      '<div class="actions">'+
-        '<button class="btn" type="button" data-demo="'+e.id+'">▶ Watch demo</button>'+
-        '<button class="btn primary" type="button" data-start="'+e.id+'">Start this one</button>'+
-      '</div></li>';
-  });
-  $('list').innerHTML = html;
-}
-
-/* ---------- Demo dialog ---------- */
-var demoPlayer = null;
-function setSpeed(v){
-  if(demoPlayer) demoPlayer.speed = v;
-  $('dSlow').setAttribute('aria-pressed', v<1 ? 'true':'false');
-  $('dNormal').setAttribute('aria-pressed', v<1 ? 'false':'true');
-}
-function setLeg(left){
-  if(demoPlayer) demoPlayer.mirror = left;
-  $('dLeft').setAttribute('aria-pressed', left ? 'true':'false');
-  $('dRight').setAttribute('aria-pressed', left ? 'false':'true');
-}
-function openDemo(id){
-  var e = byId(id); if(!e) return;
-  $('demoTitle').textContent = e.name;
-  $('demoCanvas').setAttribute('aria-label','Animated demonstration of '+e.name);
-  $('demoPlan').textContent = planText(e);
-  $('demoSteps').innerHTML = e.steps.map(function(s){ return '<li>'+esc(s)+'</li>'; }).join('');
-  $('demoTip').textContent = 'Tip: '+e.tip;
-  $('demoYT').href = demoUrl(e);
-  $('dPlay').textContent = 'Pause';
-  if(demoPlayer){ demoPlayer.stop(); demoPlayer = null; }
-  if(e.id==='balance') setHold('balance', repsOf(e));   // demo holds for the seconds set in Settings
-  $('demoDlg').showModal();
-  demoPlayer = new DemoPlayer($('demoCanvas'), $('demoCap'), e.id, !!(e.sides||e.setLabels));   // left leg first
-  demoPlayer.start();
-  setSpeed(1);
-  $('legCtrl').hidden = !(e.sides||e.setLabels);
-  setLeg(true);
-}
-$('demoClose').addEventListener('click',function(){ $('demoDlg').close(); });
-$('demoDlg').addEventListener('close',function(){ if(demoPlayer){ demoPlayer.stop(); demoPlayer = null; } });
-$('dPlay').addEventListener('click',function(){
-  if(!demoPlayer) return;
-  demoPlayer.playing = !demoPlayer.playing;
-  this.textContent = demoPlayer.playing ? 'Pause' : 'Play';
-});
-$('dReplay').addEventListener('click',function(){
-  if(!demoPlayer) return;
-  demoPlayer.t = 0; demoPlayer.playing = true; $('dPlay').textContent = 'Pause';
-});
-$('dLeft').addEventListener('click',function(){ setLeg(true); });
-$('dRight').addEventListener('click',function(){ setLeg(false); });
-$('dSlow').addEventListener('click',function(){ setSpeed(.6); });
-$('dNormal').addEventListener('click',function(){ setSpeed(1); });
-
-/* ---------- Routine review screen ---------- */
-function renderRoutine(){
-  var sel = selected(), el = $('routine');
-  var html = '<div class="r-wrap"><button class="btn r-back" id="rBack" type="button">← Back</button><div class="r-card">'+
-    '<h2 class="r-title">Today\'s routine</h2>'+
-    '<div class="r-badge">🎯 <span>Today\'s plan:</span> <span class="pill">'+sel.length+' of '+EXERCISES.length+' exercises</span></div>';
-  if(!sel.length){
-    html += '<p class="r-empty">No exercises are selected. Choose some in Settings to build today\'s routine.</p>'+
-      '<button class="btn primary big" type="button" id="rChange">Choose exercises</button>';
-  }else{
-    html += '<p class="r-note">Tap any exercise name to watch a demo. Keep a sturdy chair, rail or wall within reach in case you need support.</p><ul class="r-list">';
-    sel.forEach(function(e){
-      html += '<li class="r-item">'+
-        '<button class="thumbbtn" type="button" data-demo="'+e.id+'" aria-label="Watch demo: '+esc(e.name)+'"><img class="thumb" alt="" src="'+thumbURL(e.id)+'"></button>'+
-        '<div class="r-info"><button class="link r-name" type="button" data-demo="'+e.id+'">'+esc(e.name)+'</button>'+
-        '<div class="chips"><span class="chip">'+esc(shortText(e))+'</span><span class="chip">'+fmtDur(est(e))+'</span><span class="chip">'+esc(lastDoneText(e))+'</span></div></div></li>';
-    });
-    html += '</ul>';
-    var off = EXERCISES.filter(function(e){ return !S.enabled[e.id]; });
-    if(off.length){
-      html += '<div class="r-off"><h3>Left out today (turned off in Settings)</h3><ul>'+
-        off.map(function(e){ return '<li><span><img class="thumb sm" alt="" src="'+thumbURL(e.id)+'"><span>'+esc(e.name)+'</span></span><button class="btn" type="button" data-add="'+e.id+'">Add</button></li>'; }).join('')+
-        '</ul></div>';
-    }
-    html += '<button class="btn primary big" type="button" id="rStart">▶ Start Routine ('+fmtDur(totalSeconds(sel))+')</button>'+
-      '<button class="btn r-more" type="button" id="rChange">Change exercises</button>';
-  }
-  html += '</div></div>';
-  el.innerHTML = html;
-}
-function openRoutine(){
-  renderRoutine();
-  $('routine').hidden = false;
-  $('routine').scrollTop = 0;
-  document.body.style.overflow = 'hidden';
-  var b = $('rStart') || $('rChange'); if(b) b.focus({preventScroll:true});
-}
-function closeRoutine(){
-  $('routine').hidden = true;
-  $('routine').innerHTML = '';
-  document.body.style.overflow = '';
-}
-$('routine').addEventListener('click',function(ev){
-  var d = ev.target.closest('[data-demo]');
-  if(d){ openDemo(d.dataset.demo); return; }
-  var add = ev.target.closest('[data-add]');
-  if(add){ S.enabled[add.dataset.add] = true; save(); renderRoutine(); renderHome(); return; }
-  if(ev.target.closest('#rBack')){ closeRoutine(); return; }
-  if(ev.target.closest('#rChange')){ renderSettings(); $('settings').showModal(); return; }
-  if(ev.target.closest('#rStart')){ var list = selected(); closeRoutine(); startSession(list); }
-});
-
-/* ---------- History ---------- */
-var delArmed = '', histEdit = false, backupOpen = false, histOpen = {}, histSel = {}, delTimer = null;
-function dateKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-function niceDate(key){
-  var p = key.split('-'), d = new Date(+p[0], +p[1]-1, +p[2]);
-  return d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-}
-function renderHistory(){
-  var dates = Object.keys(S.history).filter(function(k){ return S.history[k].length; }).sort().reverse();
-  var today = todayStr();
-  var html = '<div class="r-wrap"><button class="btn r-back" id="hBack" type="button">← Back</button><div class="r-card">'+
-    '<div class="h-head"><h2 class="r-title">Exercise history</h2><button class="btn h-edit" type="button" id="hEdit">'+(histEdit ? 'Done' : 'Edit')+'</button></div>'+
-    '<p class="r-note h-keep">Kept on this device until you delete it.</p>';
-  if(histEdit && dates.length){
-    var nsel = dates.filter(function(k){ return histSel[k]; }).length;
-    html += '<div class="h-tools"><p class="r-note">Tick one or more dates to delete them, or delete everything.</p>'+
-      '<div class="h-tool-row"><button class="btn" type="button" id="hSelAll">Select all</button><button class="btn" type="button" id="hSelNone">Clear selection</button></div>'+
-      '<button class="btn danger'+(delArmed==='sel'?' armed':'')+'" type="button" id="hDelSel"'+(nsel?'':' disabled')+'>'+
-        (delArmed==='sel' ? 'Tap again to delete '+nsel+(nsel===1?' date':' dates') : 'Delete selected ('+nsel+')')+'</button>'+
-      '<button class="btn danger'+(delArmed==='all'?' armed':'')+'" type="button" id="hDelAll">'+(delArmed==='all' ? 'Tap again to delete ALL history' : 'Delete all history')+'</button></div>';
-  }
-  if(histEdit){
-    html += '<div class="h-add"><h3>Add a record</h3><p class="r-note">Use this to fix a wrong date or add something you did. To move a record, remove it and add it on the right date.</p>'+
-      '<label>Date <input type="date" id="hDate" value="'+today+'" max="'+today+'"></label>'+
-      '<label>Exercise <select id="hEx">'+EXERCISES.map(function(e){ return '<option value="'+e.id+'">'+esc(e.name)+'</option>'; }).join('')+'</select></label>'+
-      '<button class="btn primary" type="button" id="hAdd">Add to history</button><p class="r-note" id="hMsg" role="status"></p></div>';
-  }
-  if(!dates.length){
-    html += '<p class="r-empty">Nothing recorded yet. When you finish an exercise it is saved here with the date. Doing the same exercise more than once in a day counts as one.</p>';
-  }else{
-    html += '<ul class="h-list">';
-    dates.forEach(function(k){
-      var done = EXERCISES.filter(function(e){ return S.history[k].indexOf(e.id)>-1; });
-      var open = histEdit || !!histOpen[k];               // while editing, everything is shown so records can be removed
-      html += '<li class="h-item">'+(histEdit
-        ? '<label class="h-check"><input type="checkbox" data-sel="'+k+'"'+(histSel[k]?' checked':'')+'><span class="h-date">'+(k===today?'Today · ':'')+esc(niceDate(k))+'</span></label>'
-        : '<button class="h-row" type="button" data-toggle="'+k+'" aria-expanded="'+(open?'true':'false')+'">'+
-          '<span class="h-date">'+(k===today?'Today · ':'')+esc(niceDate(k))+'</span>'+
-          '<span class="h-plus" aria-hidden="true">'+(open ? '−' : '+')+'</span></button>')+
-        (open ? '<ul class="h-ex">'+done.map(function(e){
-          return '<li><span>✓ '+esc(e.name)+'</span>'+
-            (histEdit ? '<button class="btn h-rm" type="button" data-rm="'+k+'|'+e.id+'" aria-label="Remove '+esc(e.name)+' from this day">Remove</button>' : '')+'</li>';
-        }).join('')+'</ul>' : '')+'</li>';
-    });
-    html += '</ul>';
-  }
-  html += '<details class="h-backup"'+(backupOpen?' open':'')+'><summary>Back up or restore history</summary>'+
-    '<p class="r-note">Copy this text and keep it somewhere safe. To restore, paste it in the box below and tap Restore. Restoring adds to what is already here.</p>'+
-    '<textarea id="hBackup" readonly rows="3">'+esc(JSON.stringify({history:S.history,histTime:S.histTime}))+'</textarea>'+
-    '<button class="btn" type="button" id="hCopy">Copy backup</button>'+
-    '<textarea id="hPaste" rows="3" placeholder="Paste a backup here"></textarea>'+
-    '<button class="btn" type="button" id="hRestore">Restore</button><p class="r-note" id="hBMsg" role="status"></p></details>';
-  if(!storageOK) html = html.replace('<h2 class="r-title">','<div class="warn" style="margin-bottom:.8rem">This viewer is not saving data. Open the file in Safari or Chrome to keep your history.</div><h2 class="r-title">');
-  html += '</div></div>';
-  $('history').innerHTML = html;
-}
-function openHistory(){
-  delArmed = ''; histEdit = false; backupOpen = false; histOpen = {}; histSel = {};
-  renderHistory();
-  $('history').hidden = false;
-  $('history').scrollTop = 0;
-  document.body.style.overflow = 'hidden';
-}
-function closeHistory(){
-  histEdit = false; backupOpen = false; delArmed = ''; histSel = {};
-  $('history').hidden = true;
-  $('history').innerHTML = '';
-  document.body.style.overflow = '';
-}
-$('openHistory').addEventListener('click',openHistory);
-// Deleting is the only way history is ever removed.
-function deleteDates(keys){
-  var today = todayStr();
-  keys.forEach(function(k){
-    delete S.history[k]; delete S.histTime[k];
-    if(k===today) S.done = { date:today, ids:[] };     // keep the "done today" tags consistent
-  });
-  save();
-}
-function deleteAllHistory(){
-  S.history = {}; S.histTime = {}; S.done = { date:todayStr(), ids:[] };
-  save();
-}
-function addRecord(date,id){
-  var today = todayStr();
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(date||'')) return 'Please pick a date.';
-  if(date>today) return 'That date is in the future.';
-  if(!byId(id)) return 'Please pick an exercise.';
-  var a = S.history[date] || (S.history[date]=[]);
-  if(a.indexOf(id)>-1) return byId(id).name+' is already recorded on that day.';
-  a.push(id); save();
-  return '';
-}
-$('history').addEventListener('click',function(ev){
-  if(ev.target.closest('#hBack')){ closeHistory(); return; }
-  var tg = ev.target.closest('[data-toggle]');
-  if(tg){
-    var k = tg.dataset.toggle, top = $('history').scrollTop;
-    histOpen[k] = !histOpen[k];
-    renderHistory(); $('history').scrollTop = top;
-    return;
-  }
-  if(ev.target.closest('#hCopy')){
-    backupOpen = true;
-    var box = $('hBackup'), text = box.value;
-    function done(ok){ $('hBMsg').textContent = ok ? 'Copied.' : 'Select the text above and copy it.'; }
-    try{
-      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ done(true); },function(){ box.select(); done(false); }); }
-      else{ box.select(); done(document.execCommand && document.execCommand('copy')); }
-    }catch(err){ box.select(); done(false); }
-    return;
-  }
-  if(ev.target.closest('#hRestore')){
-    backupOpen = true;
-    var obj = null;
-    try{ obj = JSON.parse($('hPaste').value); }catch(err){}
-    if(!obj || typeof obj!=='object' || (!obj.history && !obj.histTime)){ $('hBMsg').textContent = 'That does not look like a backup.'; return; }
-    mergeHistory(S, obj.history, obj.histTime); save(); renderHistory(); renderHome();
-    $('hBMsg').textContent = 'Restored.';
-    return;
-  }
-  if(ev.target.closest('#hEdit')){ histEdit = !histEdit; delArmed = ''; histSel = {}; renderHistory(); renderHome(); return; }
-  var rm = ev.target.closest('[data-rm]');
-  if(rm){
-    var parts = rm.dataset.rm.split('|'), d = parts[0], id = parts[1];
-    if(S.history[d]){
-      S.history[d] = S.history[d].filter(function(x){ return x!==id; });
-      if(S.histTime[d]) delete S.histTime[d][id];
-      if(d===todayStr()) S.done.ids = S.done.ids.filter(function(x){ return x!==id; });
-      if(!S.history[d].length){ delete S.history[d]; delete S.histTime[d]; }
-      save(); renderHistory(); renderHome();
-    }
-    return;
-  }
-  if(ev.target.closest('#hAdd')){
-    var msg = addRecord($('hDate').value, $('hEx').value);
-    if(msg){ $('hMsg').textContent = msg; return; }
-    var keepDate = $('hDate').value;
-    renderHistory(); renderHome();
-    $('hMsg').textContent = 'Added.';
-    return;
-  }
-  var sel = ev.target.closest('[data-sel]');
-  if(sel){ var k2 = sel.dataset.sel, t2 = $('history').scrollTop; histSel[k2] = !histSel[k2]; delArmed = ''; renderHistory(); $('history').scrollTop = t2; return; }
-  function armed(which,run){
-    if(delArmed!==which){
-      delArmed = which; renderHistory();
-      clearTimeout(delTimer); delTimer = setTimeout(function(){ if(delArmed && !$('history').hidden){ delArmed = ''; renderHistory(); } },4000);
-      return;
-    }
-    clearTimeout(delTimer); delArmed = ''; run(); histSel = {}; renderHistory(); renderHome();
-  }
-  if(ev.target.closest('#hSelAll')){ Object.keys(S.history).forEach(function(k){ if(S.history[k].length) histSel[k] = true; }); delArmed = ''; renderHistory(); return; }
-  if(ev.target.closest('#hSelNone')){ histSel = {}; delArmed = ''; renderHistory(); return; }
-  if(ev.target.closest('#hDelSel')){
-    var chosen = Object.keys(histSel).filter(function(k){ return histSel[k] && S.history[k]; });
-    if(!chosen.length) return;
-    armed('sel',function(){ deleteDates(chosen); });
-    return;
-  }
-  if(ev.target.closest('#hDelAll')){ armed('all',function(){ deleteAllHistory(); }); return; }
-});
-
-/* ---------- Settings ---------- */
-function limits(e,f){
-  if(f==='sets') return [1,10];
-  if(f==='rest') return [0,300];
-  if(f==='repRest') return [0,60];
-  return isTimed(e) ? [5,300] : [1,60];   // reps (or seconds held per leg)
-}
-function updateEst(id){
-  var e=byId(id), a=$('sec-'+id), b=$('tot-'+id);
-  if(a) a.textContent = workOf(e)+' sec';
-  if(b) b.textContent = fmtDur(est(e));
-  var row=$('rrrow-'+id), r=$('rr-'+id), rrTotal=(repsOf(e)-1)*repRestOf(e);
-  if(row) row.hidden = !(rrTotal>0);
-  if(r) r.textContent = rrTotal+' sec per set';
-}
-function fieldHtml(e,f,label){
-  var lim=limits(e,f), v=S[f][e.id];
-  if(f==='repRest' && !v) v='';                      // blank = no rest between reps
-  return '<label>'+label+' <input type="number" inputmode="numeric" min="'+lim[0]+'" max="'+lim[1]+'" data-f="'+f+'" data-id="'+e.id+'" value="'+v+'"'+(f==='repRest' ? ' placeholder="none"' : '')+'></label>';
-}
-function renderSettings(){
-  var html = '';
-  EXERCISES.forEach(function(e){
-    var timed = isTimed(e);
-    html += '<div class="ex-row">'+
-      '<label class="chk"><input type="checkbox" data-en="'+e.id+'"'+(S.enabled[e.id]?' checked':'')+'> '+esc(e.name)+'</label>'+
-      '<div class="nums">'+
-        fieldHtml(e,'sets', timed ? 'Rounds (both legs)' : (e.sides ? 'Sets per leg' : 'Sets'))+
-        fieldHtml(e,'reps', timed ? 'Hold per leg (sec)' : 'Reps')+
-        fieldHtml(e,'rest', timed ? 'Rest between legs (sec)' : 'Rest between sets (sec)')+
-        (timed ? '' : fieldHtml(e,'repRest','Rest between reps (sec)'))+
-      '</div>'+
-      '<div class="est"><span>Seconds per '+(timed?'leg':'set')+' (estimated)</span><b id="sec-'+e.id+'">'+workOf(e)+' sec</b></div>'+
-      (timed ? '' : '<div class="est" id="rrrow-'+e.id+'"'+(repRestOf(e)>0?'':' hidden')+'><span>Includes rest between reps</span><b id="rr-'+e.id+'">'+((repsOf(e)-1)*repRestOf(e))+' sec per set</b></div>')+
-      '<div class="est"><span>Total time (estimated)</span><b id="tot-'+e.id+'">'+fmtDur(est(e))+'</b></div>'+
-    '</div>';
-  });
-  $('exRows').innerHTML = html;
-  $('between').value = S.between;
-  $('optSound').checked = S.sound;
-  $('optVoice').checked = S.voice;
-  $('optHC').checked = S.contrast;
-  document.querySelectorAll('#sizeSeg button').forEach(function(b){
-    b.setAttribute('aria-pressed', b.dataset.size===S.size ? 'true':'false');
+let activeIdx=0;
+function optionList(){ return currentList; }
+function buildPickList(){
+  const ul=$('pick-list'); ul.replaceChildren();
+  optionList().forEach((t,i)=>{
+    const li=el('li','pick-opt'); li.id='pick-opt-'+i; li.setAttribute('role','option');
+    li.setAttribute('aria-selected', String(t.file===selected));
+    li.append(thumb(t));
+    const txt=el('span','pick-text'); txt.append(el('span','',t.name), el('small','',t.tag));
+    li.append(txt); li.insertAdjacentHTML('beforeend','<span class="tick" aria-hidden="true">✓</span>');
+    li.addEventListener('click',()=>choose(t.file));
+    li.addEventListener('mousemove',()=>setActive(i));
+    ul.append(li);
   });
 }
-function clampNum(v,min,max,fallback){
-  var n = parseInt(v,10);
-  if(isNaN(n)) return fallback;
-  return Math.min(max,Math.max(min,n));
+function setActive(i){
+  const opts=[...$('pick-list').children]; activeIdx=Math.max(0,Math.min(opts.length-1,i));
+  opts.forEach((o,k)=>o.classList.toggle('active',k===activeIdx));
+  $('pick-list').setAttribute('aria-activedescendant','pick-opt-'+activeIdx);
+  opts[activeIdx].scrollIntoView({block:'nearest'});
 }
-$('openSettings').addEventListener('click',function(){ renderSettings(); $('settings').showModal(); });
-$('closeSettings').addEventListener('click',function(){ $('settings').close(); });
-$('settings').addEventListener('close',function(){ renderHome(); if(!$('routine').hidden) renderRoutine(); });
-// live estimate while typing (only valid numbers are applied)
-$('exRows').addEventListener('input',function(ev){
-  var t = ev.target, f = t.dataset.f; if(!f) return;
-  var e = byId(t.dataset.id), lim = limits(e,f), n = (f==='repRest' && t.value==='') ? 0 : parseInt(t.value,10);
-  if(isNaN(n) || n<lim[0] || n>lim[1]) return;
-  S[f][e.id] = n; save(); updateEst(e.id);
+function openList(){
+  buildPickList(); $('pick-list').hidden=false; $('pick-btn').setAttribute('aria-expanded','true');
+  const cur=optionList().findIndex(t=>t.file===selected); setActive(cur<0?0:cur); $('pick-list').focus();
+}
+function closeList(focusBtn){ $('pick-list').hidden=true; $('pick-btn').setAttribute('aria-expanded','false'); if(focusBtn) $('pick-btn').focus(); }
+function choose(file){ selected=file; closeList(true); render(currentList); }
+$('pick-btn').addEventListener('click',()=>{ $('pick-list').hidden?openList():closeList(false); });
+$('pick-btn').addEventListener('keydown',e=>{ if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); if($('pick-list').hidden) openList(); } });
+$('pick-list').addEventListener('keydown',e=>{
+  const n=optionList().length;
+  if(e.key==='ArrowDown'){e.preventDefault();setActive(activeIdx+1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();setActive(activeIdx-1);}
+  else if(e.key==='Home'){e.preventDefault();setActive(0);}
+  else if(e.key==='End'){e.preventDefault();setActive(n-1);}
+  else if(e.key==='Enter'||e.key===' '){e.preventDefault();const t=optionList()[activeIdx];if(t)choose(t.file);}
+  else if(e.key==='Escape'){e.preventDefault();closeList(true);}
+  else if(e.key==='Tab'){closeList(false);}
 });
-$('exRows').addEventListener('change',function(ev){
-  var t = ev.target;
-  if(t.dataset.en){ S.enabled[t.dataset.en] = t.checked; save(); return; }
-  var f = t.dataset.f; if(!f) return;
-  var e = byId(t.dataset.id), lim = limits(e,f);
-  S[f][e.id] = (f==='repRest' && t.value==='') ? 0 : clampNum(t.value,lim[0],lim[1],S[f][e.id]);
-  t.value = (f==='repRest' && !S[f][e.id]) ? '' : S[f][e.id];
-  save(); updateEst(e.id);
-});
-$('selAll').addEventListener('click',function(){ EXERCISES.forEach(function(e){S.enabled[e.id]=true;}); save(); renderSettings(); });
-$('selNone').addEventListener('click',function(){ EXERCISES.forEach(function(e){S.enabled[e.id]=false;}); save(); renderSettings(); });
-$('resetTiming').addEventListener('click',function(){
-  EXERCISES.forEach(function(e){ S.sets[e.id]=e.sets; S.reps[e.id]=e.reps; S.rest[e.id]=e.rest; S.repRest[e.id]=0; });
-  S.between = 20; save(); renderSettings();
-});
-$('between').addEventListener('change',function(){ S.between = clampNum(this.value,5,180,S.between); this.value=S.between; save(); });
-$('optSound').addEventListener('change',function(){ S.sound=this.checked; save(); });
-$('optVoice').addEventListener('change',function(){ S.voice=this.checked; save(); if(!this.checked && window.speechSynthesis) speechSynthesis.cancel(); });
-$('optHC').addEventListener('change',function(){ S.contrast=this.checked; save(); applyDisplay(); });
-$('sizeSeg').addEventListener('click',function(ev){
-  var b = ev.target.closest('button'); if(!b) return;
-  S.size = b.dataset.size; save(); applyDisplay(); renderSettings();
-});
+document.addEventListener('click',e=>{ if(!$('picker').contains(e.target)&&!$('pick-list').hidden) closeList(false); });
 
-/* ---------- Sound, voice, wake lock ---------- */
-var audioCtx = null;
-function initAudio(){
+function render(list){
+  currentList=list;
+  if(selected && !list.some(t=>t.file===selected)) selected=null;     /* chosen tool no longer exists */
+  const shown = selected ? list.filter(t=>t.file===selected) : [];     /* show nothing until the user chooses */
+  const box=$('tools'); box.replaceChildren(); shown.forEach(t=>box.append(renderCard(t)));
+  $('hint').hidden = !!selected;
+  $('status').textContent = selected ? 'Showing '+shown[0].name : list.length+(list.length===1?' routine':' routines')+' available. Select one to see its details.';
+  updatePickBtn();
+  if(!$('pick-list').hidden) buildPickList();
+}
+function knownEntry(file){ const k=KNOWN[file.toLowerCase()]; return k ? Object.assign({file},k) : null; }
+
+/* start with the three known tools so the page works even if the folder cannot be read */
+let tools = ['LegStrengthBalance.html','lowerbackhipmobility.html','kneesupportstrength.html'].map(knownEntry);
+render(tools);
+
+async function pageTitle(file){
   try{
-    if(!audioCtx){ var AC = window.AudioContext || window.webkitAudioContext; if(AC) audioCtx = new AC(); }
-    if(audioCtx && audioCtx.state==='suspended') audioCtx.resume();
-  }catch(err){}
+    const ctl=new AbortController(); const timer=setTimeout(()=>ctl.abort(),6000);
+    const r=await fetch(CFG.base+encodeURIComponent(file),{signal:ctl.signal}); clearTimeout(timer);
+    if(!r.ok) return '';
+    const doc=new DOMParser().parseFromString(await r.text(),'text/html');
+    return (doc.title||'').trim();
+  }catch(e){ return ''; }
 }
-function beep(freq,dur){
-  if(!S.sound || !audioCtx) return;
-  try{
-    var o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type='sine'; o.frequency.value=freq;
-    g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.35,audioCtx.currentTime+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+dur);
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime+dur+0.05);
-  }catch(err){}
-}
-function speak(text){
-  if(!S.voice || !window.speechSynthesis) return;
-  try{
-    speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(text); u.rate = 0.9;
-    speechSynthesis.speak(u);
-  }catch(err){}
-}
-var wakeLock = null;
-function keepAwake(on){
-  try{
-    if(on && navigator.wakeLock){ navigator.wakeLock.request('screen').then(function(l){ wakeLock=l; }).catch(function(){}); }
-    else if(!on && wakeLock){ wakeLock.release(); wakeLock=null; }
-  }catch(err){}
-}
-document.addEventListener('visibilitychange',function(){
-  if(document.visibilityState==='hidden' && sess && !sess.finished && !sess.stopped) saveSession();
-  if(document.visibilityState==='visible' && sess && !sess.finished && !sess.stopped) keepAwake(true);
-});
-
-/* ---------- Session engine ---------- */
-var sess = null;
-
-function buildSteps(list){
-  var steps = [];
-  list.forEach(function(e,idx){
-    var n = setsOf(e), work = workOf(e), rest = S.rest[e.id];
-    if(idx===0) steps.push({type:'ready', ex:e, dur:READY_SECONDS, exIdx:0});
-    for(var s=1;s<=n;s++){
-      steps.push({type:'work', ex:e, set:s, dur:work, last:(s===n), exIdx:idx});
-      if(s<n && rest>0) steps.push({type:'rest', ex:e, set:s, dur:rest, exIdx:idx});
-    }
-    if(idx<list.length-1) steps.push({type:'between', ex:e, next:list[idx+1], dur:S.between, exIdx:idx});
-  });
-  return steps;
-}
-
-// Remember where you are, so if the viewer reloads you can pick up again from the "Session stopped" card.
-var SESS_KEY = 'legExerciseCoach.session';
-function saveSession(){
-  if(!sess || sess.finished) return;
-  var rem = (sess.stopped || sess.paused) ? sess.remaining : Math.max(0, sess.endAt-Date.now());
-  try{ localStorage.setItem(SESS_KEY, JSON.stringify({ ids:sess.list.map(function(e){ return e.id; }), i:sess.i, remaining:Math.round(rem), at:Date.now() })); }catch(err){}
-}
-function clearSession(){ try{ localStorage.removeItem(SESS_KEY); }catch(err){} }
-function restoreSession(){
-  var raw = null;
-  try{ raw = localStorage.getItem(SESS_KEY); }catch(err){}
-  if(!raw) return;
-  try{
-    var p = JSON.parse(raw);
-    if(!p || !Array.isArray(p.ids) || Date.now()-p.at > 6*3600*1000){ clearSession(); return; }
-    var list = p.ids.map(byId).filter(Boolean);
-    if(!list.length){ clearSession(); return; }
-    var steps = buildSteps(list), i = Math.max(0, Math.min(steps.length-1, +p.i||0)), dur = steps[i].dur*1000;
-    sess = { list:list, steps:steps, i:i, paused:true, stopped:true, finished:false, completed:[], timer:null,
-             endAt:0, dur:dur, remaining:Math.max(0, Math.min(dur, +p.remaining||dur)), lastSec:null, lastRep:1, repResting:false, prev:null };
-  }catch(err){ clearSession(); }
-}
-
-function stopPreview(){ if(sess && sess.prev){ sess.prev.stop(); sess.prev = null; } }
-
-function startSession(list){
-  if(!list.length) return;
-  initAudio();
-  sess = { list:list, steps:buildSteps(list), i:0, paused:false, finished:false,
-           completed:[], timer:null, endAt:0, dur:0, remaining:0, lastSec:null, prev:null };
-  $('session').hidden = false;
-  document.body.style.overflow = 'hidden';
-  keepAwake(true);
-  enterStep(0);
-  sess.timer = setInterval(tick,200);
-}
-
-function enterStep(i){
-  sess.i = i;
-  var st = sess.steps[i];
-  sess.dur = st.dur*1000;
-  sess.remaining = sess.dur;
-  sess.endAt = Date.now()+sess.dur;
-  sess.lastSec = null;
-  sess.lastRep = 1; sess.repResting = false;
-  sess.paused = false;
-  renderStep();
-  saveSession();
-  speak(spokenText(st));
-  $('announcer').textContent = stepTitle(st);
-}
-
-function nextText(st){
-  if(st.type==='rest'){
-    return 'Next: '+setLabel(st.ex,st.set+1);
+async function discover(){
+  const ctl=new AbortController(); const timer=setTimeout(()=>ctl.abort(),8000);
+  const r=await fetch('https://api.github.com/repos/'+CFG.owner+'/'+CFG.repo+'/contents/'+CFG.dir,{headers:{Accept:'application/vnd.github+json'},signal:ctl.signal});
+  clearTimeout(timer);
+  if(!r.ok) throw new Error('folder list unavailable');
+  const items=await r.json();
+  const files=items.filter(i=>i.type==='file'&&/\.html?$/i.test(i.name)&&!/^(index|readme)\.html?$/i.test(i.name)).map(i=>i.name);
+  if(!files.length) throw new Error('no tools found');
+  const out=[]; let extra=0;
+  const known=files.filter(f=>KNOWN[f.toLowerCase()]).sort((a,b)=>ORDER.indexOf(a.toLowerCase())-ORDER.indexOf(b.toLowerCase()));
+  known.forEach(f=>out.push(knownEntry(f)));
+  const unknown=files.filter(f=>!KNOWN[f.toLowerCase()]).sort((a,b)=>a.localeCompare(b));
+  for(const f of unknown){
+    const [c,soft]=EXTRA_COLOURS[extra++%EXTRA_COLOURS.length];
+    const title=await pageTitle(f);
+    out.push({file:f,name:title||prettify(f),tag:'Exercise tool',c,soft,art:'gen',desc:'A guided exercise tool from the Digital Tools exercise folder.',chips:[]});
   }
-  if(st.type==='between') return 'Next: '+st.next.name;
-  return '';
+  return out;
 }
-function stepTitle(st){
-  if(st.type==='ready') return 'Get ready: '+st.ex.name;
-  if(st.type==='work') return st.ex.name+', '+setLabel(st.ex,st.set);
-  if(st.type==='rest') return 'Rest. '+nextText(st);
-  return 'Well done. Rest. '+nextText(st);
-}
-function spokenText(st){
-  if(st.type==='ready') return 'Get ready. '+st.ex.name+'.';
-  if(st.type==='work') return st.ex.name+'. '+setLabel(st.ex,st.set)+'. Begin.';
-  if(st.type==='rest') return 'Rest. '+nextText(st)+'.';
-  return 'Well done. Rest. '+nextText(st)+'.';
-}
-
-function countText(sec){ sec=Math.max(0,Math.ceil(sec)); return sec>=100 ? clock(sec) : String(sec); }
-
-function renderStep(){
-  stopPreview();
-  var st = sess.steps[sess.i];
-  var el = $('session');
-  var phase = st.type==='work' ? 'work' : (st.type==='rest' ? 'rest' : 'ready');
-  el.className = 'p-'+phase;
-
-  var multi = sess.list.length>1;
-  var of = 'Exercise '+(st.exIdx+1)+' of '+sess.list.length;
-  var demoEx = st.type==='between' ? st.next : st.ex;
-  var resting = st.type!=='work';
-  var legJump = legSkip(st);
-  var isRest = st.type==='rest' || st.type==='between';   // rest periods show a standing figure, not the exercise
-  var top, title, desc;
-  if(st.type==='work'){
-    top = (multi? of+' · ' : '')+setLabel(st.ex,st.set);
-    title = st.ex.name+(isTimed(st.ex) ? ' — '+setLabel(st.ex,st.set) : (st.ex.sides ? ' — '+sideOf(st.ex,st.set) : ''));
-    desc = st.ex.cue;
-  }else if(st.type==='rest'){
-    top = (multi? of+' · ' : '')+'Resting';
-    var switching = st.ex.sides && sideOf(st.ex,st.set)!==sideOf(st.ex,st.set+1);
-    title = switching ? 'Rest — switch legs' : 'Rest';
-    desc = (switching ? 'Now switch to your '+sideOf(st.ex,st.set+1).toLowerCase()+'. ' : '')+nextText(st)+'. Breathe and shake out your legs.';
-  }else if(st.type==='ready'){
-    top = 'Get ready'+(multi? ' · '+of : '');
-    title = st.ex.name; desc = st.ex.cue;
-  }else{
-    top = of+' done';
-    title = 'Well done — rest';
-    desc = nextText(st)+'.';
-  }
-
-  var html =
-    '<div class="s-card">'+
-      '<div class="s-top">'+esc(top)+'</div>'+
-      '<canvas class="stage-s" id="prevCanvas" role="img" aria-label="'+(isRest ? 'A person standing and resting' : 'Animated demonstration of '+esc(demoEx.name))+'"></canvas>'+
-      '<p class="s-cap"><span id="prevCap"></span></p>'+
-      '<h2 class="s-title">'+esc(title)+'</h2>'+
-      '<div class="s-count" id="tNum" aria-hidden="true">'+countText(st.dur)+'</div>'+
-      '<div class="s-sub" id="tSub">seconds remaining</div>'+
-      '<div class="s-rep" id="repLine"></div>'+
-      (st.type==='work' && !isTimed(st.ex) ? '<div class="dots" id="repDots" aria-hidden="true">'+Array.apply(null,Array(repsOf(st.ex))).map(function(_,i){ return '<i'+(i===0?' class="cur"':'')+'></i>'; }).join('')+'</div>' : '')+
-      '<div class="s-hold" id="holdLine"></div>'+
-      '<div class="bar" aria-hidden="true"><i id="barFill"></i></div>'+
-      '<p class="s-desc">'+esc(desc)+'</p>'+
-      '<button class="link" type="button" id="bDemo">Watch full demo</button>'+
-      '<div class="s-btns">'+
-        '<button class="btn main" type="button" id="bPause">Pause</button>'+
-        '<button class="btn" type="button" id="bSkip">'+(legJump ? 'Skip to '+esc(legJump.name.toLowerCase()) : 'Skip')+'</button>'+
-        (resting
-          ? '<button class="btn" type="button" id="bAdd">+15 seconds</button>'
-          : '<button class="btn" type="button" id="bStop">Stop</button>')+
-        (resting ? '<button class="btn wide" type="button" id="bStop">Stop</button>' : '')+
-      '</div>'+
-    '</div>';
-  el.innerHTML = html;
-  el.scrollTop = 0;
-  $('bPause').addEventListener('click',togglePause);
-  $('bSkip').addEventListener('click',function(){ advance(false); });
-  $('bStop').addEventListener('click',stopSession);
-  var add = $('bAdd'); if(add) add.addEventListener('click',function(){ sess.endAt+=15000; sess.dur+=15000; sess.remaining+=15000; });
-  $('bDemo').addEventListener('click',function(){ if(!sess.paused) togglePause(); openDemo(demoEx.id); });
-  var leftLeg = !isRest && legIndex(demoEx, st.type==='work' ? st.set : 1)===0;
-  var sceneId = isRest ? 'rest' : (demoEx.holdScene || demoEx.id);
-  sess.prev = new DemoPlayer($('prevCanvas'), $('prevCap'), sceneId, leftLeg);
-  sess.sceneId = sceneId; sess.mirror = leftLeg;
-  if(st.type==='work') sess.prev.speed = repSpeed(st.ex);
-  sess.prev.start();
-  updateTimerUI(sess.remaining);
-  $('bPause').focus({preventScroll:true});
-}
-
-// With a rest between reps, run the demo at the pace of one rep so it finishes each rep, then pauses.
-function repSpeed(ex){
-  if(isTimed(ex) || repRestOf(ex)<=0) return 1;
-  var sc = SCENES[ex.id]; if(!sc) return 1;
-  if(sc.segs.some(function(g){ return g.count; })) return 1;     // scenes with a counted hold keep real time
-  return Math.max(.5, Math.min(2.2, sc.total/ex.perRep));
-}
-
-function updateTimerUI(rem){
-  var st = sess.steps[sess.i];
-  var num = $('tNum'); if(!num) return;
-  var sec = Math.ceil(rem/1000);
-  num.textContent = countText(rem/1000);
-  var sub = $('tSub'); if(sub) sub.textContent = sec>=100 ? 'minutes and seconds remaining' : 'seconds remaining';
-  var bar = $('barFill');
-  if(bar) bar.style.width = (sess.dur>0 ? Math.max(0,Math.min(100,rem/sess.dur*100)) : 0)+'%';
-  if(st.type==='work'){
-    var ex = st.ex, elapsed = sess.dur-rem;
-    var line = $('repLine'), hold = $('holdLine');
-    if(!isTimed(ex)){
-      var total = repsOf(ex), perMs = ex.perRep*1000, rrMs = repRestOf(ex)*1000, cyc = perMs+rrMs;
-      var idx = Math.min(total-1, Math.floor(elapsed/cyc)), within = elapsed-idx*cyc;
-      var rep = idx+1, resting = rrMs>0 && idx<total-1 && within>=perMs;   // in the pause between two reps
-      if(line) line.textContent = (ex.unit||'Rep')+' '+rep+' of '+total;
-      if(rep!==sess.lastRep || resting!==!!sess.repResting){
-        var newRep = rep!==sess.lastRep;
-        sess.lastRep = rep; sess.repResting = resting;
-        var d = $('repDots');
-        if(d){ for(var i=0;i<d.children.length;i++){ d.children[i].className = i<rep-1 ? 'on' : (i===rep-1 ? (resting ? 'on' : 'cur') : ''); } }
-        if(newRep && !sess.quiet){ beep(520,0.08); speak(String(rep)); }
-        if(sess.prev && rrMs>0){                      // rest between reps: freeze the figure like a pause
-          sess.prev.t = 0;
-          sess.prev.playing = !resting;
-          sess.prev.pauseIcon = resting;
-          if(!resting) sess.prev.speed = repSpeed(ex);
-        }
-      }
-      if(hold){
-        if(resting) hold.textContent = 'Rest — next rep in '+Math.ceil((cyc-within)/1000);
-        else if(ex.holdSec){
-          var holdLen = perMs*ex.holdSec/(ex.holdSec+1);
-          hold.textContent = within<holdLen ? 'Hold for '+(ex.holdSec-Math.floor(within/(holdLen/ex.holdSec))) : 'Stand tall, reset';
-        }else hold.textContent = '';
-      }
-    }else{
-      if(hold) hold.textContent = '';
-      if(line) line.textContent = 'Held '+Math.min(Math.floor(elapsed/1000), Math.round(sess.dur/1000))+' sec';
-    }
-  }
-}
-
-function tick(){
-  if(!sess || sess.paused || sess.finished) return;
-  if(Date.now()-(sess.lastSave||0) > 3000){ sess.lastSave = Date.now(); saveSession(); }
-  var rem = Math.max(0, sess.endAt-Date.now());
-  sess.remaining = rem;
-  updateTimerUI(rem);
-  var sec = Math.ceil(rem/1000);
-  if(sec!==sess.lastSec){
-    sess.lastSec = sec;
-    if(sec>=1 && sec<=3) beep(660,0.12);
-  }
-  if(rem<=0) advance(true);
-}
-
-// On a left/right exercise, skipping while on the first leg jumps to the switch-legs rest (then the other leg).
-function legSkip(st){
-  var e = st.ex;
-  if(!e || !e.sides || (st.type!=='work' && st.type!=='rest')) return null;
-  var per = S.sets[e.id], k = Math.floor((st.set-1)/per);
-  if(k >= e.sides.length-1) return null;                      // already on the last leg
-  if(st.type==='rest' && st.set%per===0) return null;         // already on the "switch legs" rest
-  var firstOfNext = per*(k+1)+1, sw = -1, fw = -1;
-  for(var i=0;i<sess.steps.length;i++){
-    var t = sess.steps[i];
-    if(t.ex!==e) continue;
-    if(t.type==='rest' && t.set===per*(k+1) && sw<0) sw = i;
-    if(t.type==='work' && t.set===firstOfNext && fw<0) fw = i;
-  }
-  var idx = sw>sess.i ? sw : fw;
-  return idx>=0 ? { idx:idx, name:e.sides[k+1] } : null;
-}
-
-function recordDone(id){
-  if(sess && sess.completed.indexOf(id)<0) sess.completed.push(id);
-  freshDone();
-  if(S.done.ids.indexOf(id)<0) S.done.ids.push(id);
-  addHistory(id);            // same exercise twice in a day still counts as one entry
-  save();
-}
-// Manual: "I did this one" (for when you skipped ahead or stopped early)
-function markDone(id){ recordDone(id); renderHome(); }
-
-function advance(auto){
-  var st = sess.steps[sess.i];
-  if(!auto){
-    var jump = legSkip(st);
-    if(jump){ beep(880,0.35); enterStep(jump.idx); return; }
-  }
-  if(st.type==='work') recordDone(st.ex.id);      // you finished (or moved past) a set, so this exercise counts as done today
-  if(sess.i+1>=sess.steps.length){ finishSession(); return; }
-  beep(880,0.35);
-  enterStep(sess.i+1);
-}
-
-function togglePause(){
-  if(!sess) return;
-  var btn = $('bPause');
-  if(!sess.paused){
-    sess.paused = true;
-    sess.remaining = Math.max(0, sess.endAt-Date.now());
-    if(window.speechSynthesis) speechSynthesis.cancel();
-    if(btn) btn.textContent = 'Resume';
-    saveSession();
-  }else{
-    sess.paused = false;
-    sess.endAt = Date.now()+sess.remaining;
-    if(btn) btn.textContent = 'Pause';
-  }
-}
-
-function closeSession(){
-  if(sess){ clearInterval(sess.timer); stopPreview(); }
-  if(window.speechSynthesis) speechSynthesis.cancel();
-  keepAwake(false);
-  $('session').hidden = true;
-  $('session').innerHTML = '';
-  document.body.style.overflow = '';
-  sess = null;
-  renderHome();
-}
-// Stop leaves the timer screen (no pop-up) and keeps the session so it can be resumed or restarted.
-function stopSession(){
-  if(!sess || sess.finished || sess.stopped) return;
-  if(!sess.paused) sess.remaining = Math.max(0, sess.endAt-Date.now());
-  sess.paused = true; sess.stopped = true;
-  clearInterval(sess.timer);
-  stopPreview();
-  if(window.speechSynthesis) speechSynthesis.cancel();
-  keepAwake(false);
-  $('session').hidden = true;
-  $('session').innerHTML = '';
-  document.body.style.overflow = '';
-  saveSession();
-  renderHome();
-  window.scrollTo && window.scrollTo(0,0);
-}
-function exerciseStartIndex(k){
-  for(var i=0;i<sess.steps.length;i++){
-    var t = sess.steps[i];
-    if(t.exIdx===k && (t.type==='ready' || t.type==='work')) return i;
-  }
-  return 0;
-}
-function showSession(){
-  initAudio();
-  $('session').hidden = false;
-  document.body.style.overflow = 'hidden';
-  keepAwake(true);
-  sess.timer = setInterval(tick,200);
-}
-function resumeSession(){
-  if(!sess || !sess.stopped) return;
-  sess.stopped = false; sess.paused = false; sess.quiet = true;
-  sess.endAt = Date.now()+sess.remaining;
-  sess.lastSec = null; sess.lastRep = 1; sess.repResting = false;
-  showSession();
-  renderStep();          // rebuilds the screen at the same step, same time left
-  sess.quiet = false;
-  renderHome();
-}
-function restartExercise(){
-  if(!sess || !sess.stopped) return;
-  var st = sess.steps[sess.i];
-  var k = st.type==='between' ? st.exIdx+1 : st.exIdx;
-  sess.stopped = false;
-  showSession();
-  enterStep(exerciseStartIndex(k));   // back to the beginning of this exercise
-  renderHome();
-}
-function discardSession(){
-  clearSession();
-  if(sess){ clearInterval(sess.timer); }
-  sess = null;
-  renderHome();
-}
-function renderResumeCard(){
-  var card = $('resumeCard');
-  if(!(sess && sess.stopped)){ card.hidden = true; return; }
-  var st = sess.steps[sess.i], info;
-  if(st.type==='work') info = st.ex.name+' — '+setLabel(st.ex,st.set);
-  else if(st.type==='rest') info = st.ex.name+' — resting before '+setLabel(st.ex,st.set+1).toLowerCase();
-  else if(st.type==='ready') info = st.ex.name+' — getting ready';
-  else info = 'Resting before '+st.next.name;
-  var left = Math.max(0,Math.ceil(sess.remaining/1000));
-  $('resumeInfo').textContent = info+' · '+(left>=60 ? clock(left) : left+' sec')+' left';
-  $('restartBtn').hidden = (st.type==='between');
-  // Once recorded, the button stays visible but turns into a "completed" message (instead of vanishing)
-  var already = isDone(st.ex), mb = $('markBtn');
-  mb.hidden = false;
-  mb.disabled = already;
-  mb.classList.toggle('done-state', already);
-  mb.textContent = already ? '✓ I did '+st.ex.name+' — exercise completed' : 'I did '+st.ex.name+' — mark as done';
-  card.hidden = false;
-}
-
-function renderFinishScreen(){
-  var doneNames = sess.list.filter(function(e){ return sess.completed.indexOf(e.id)>-1; });
-  var missed = sess.list.filter(function(e){ return sess.completed.indexOf(e.id)<0; });
-  var el = $('session');
-  el.className = 'p-done';
-  var msg = doneNames.length===sess.list.length
-    ? 'You finished '+(sess.list.length>1?'all '+sess.list.length+' exercises':'this exercise')+'.'
-    : 'You completed '+doneNames.length+' of '+sess.list.length+'.';
-  el.innerHTML =
-    '<div class="s-card">'+
-      '<h2 class="s-title" style="font-size:2rem;margin-top:2rem">🎉 Well done!</h2>'+
-      '<p class="s-desc">'+esc(msg)+'</p>'+
-      '<ul class="done-list">'+doneNames.map(function(e){ return '<li>✓ '+esc(e.name)+'</li>'; }).join('')+'</ul>'+
-      (doneNames.length ? '<p class="s-desc">Saved to your history.</p>' : '')+
-      (missed.length ? '<div class="miss"><p class="s-desc">Did you do these but skipped ahead? Tap to record them.</p>'+
-        missed.map(function(e){ return '<div class="miss-row"><span>'+esc(e.name)+'</span><button class="btn" type="button" data-mark="'+e.id+'">Mark as done</button></div>'; }).join('')+'</div>' : '')+
-      '<p class="s-desc">Take a moment to sit down and have some water.</p>'+
-      '<div class="s-btns"><button class="btn main" type="button" id="bBack">Back to exercises</button></div>'+
-    '</div>';
-  $('bBack').addEventListener('click',closeSession);
-}
-function finishSession(){
-  clearInterval(sess.timer);
-  clearSession();
-  stopPreview();
-  sess.finished = true;
-  keepAwake(false);
-  renderHome();          // lists behind the finish screen already show what you just completed
-  beep(880,0.2); setTimeout(function(){ beep(1175,0.4); },250);
-  renderFinishScreen();
-  $('bBack').focus();
-  speak('Well done. You have finished.');
-  $('announcer').textContent = 'Session finished. Well done.';
-}
-$('session').addEventListener('click',function(ev){
-  var m = ev.target.closest('[data-mark]');
-  if(m && sess && sess.finished){ markDone(m.dataset.mark); renderFinishScreen(); }
-});
-
-/* ---------- Wiring ---------- */
-$('startAll').addEventListener('click',openRoutine);
-$('resumeBtn').addEventListener('click',resumeSession);
-$('restartBtn').addEventListener('click',restartExercise);
-$('discardBtn').addEventListener('click',discardSession);
-$('markBtn').addEventListener('click',function(){ if(sess && sess.stopped && !isDone(sess.steps[sess.i].ex)) markDone(sess.steps[sess.i].ex.id); });
-$('list').addEventListener('click',function(ev){
-  var d = ev.target.closest('[data-demo]');
-  if(d){ openDemo(d.dataset.demo); return; }
-  var b = ev.target.closest('[data-start]'); if(!b) return;
-  var ex = byId(b.dataset.start);
-  if(ex) startSession([ex]);
-});
-
-if(window.addEventListener) window.addEventListener('pagehide',function(){ if(sess && !sess.finished && !sess.stopped) saveSession(); });
-restoreSession();
-applyDisplay();
-renderHome();
-})();
+discover().then(list=>{ tools=list; render(tools); }).catch(()=>{ /* keep the built-in list */ });
 </script>
-<script>(function(){
-if(window.top===window.self)return;
-var WRAPPER_ORIGIN="https://sharable.link";
-function retarget(raw,isDownload){
-var here,url;
-try{here=new URL(location.href);url=new URL(raw,location.href)}catch(e){return null}
-if(url.protocol!=="http:"&&url.protocol!=="https:")return null;
-if(url.origin!==here.origin)return url.href;
-if(isDownload||url.pathname===here.pathname)return null;
-return WRAPPER_ORIGIN+url.pathname+url.search+url.hash}
-document.addEventListener("click",function(e){
-if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
-if(document.querySelector("base[target]"))return;
-var a=e.target&&e.target.closest?e.target.closest("a[href]"):null;
-if(!a||(a.target&&a.target!=="_self"))return;
-var href=retarget(a.getAttribute("href"),a.hasAttribute("download"));
-if(!href)return;
-a.href=href;a.target="_top"});
-document.addEventListener("submit",function(e){
-var form=e.target;
-if(e.defaultPrevented||!form||form.target)return;
-var href=retarget(form.getAttribute("action"),false);
-if(!href)return;
-form.action=href;form.target="_top"})})();</script></body>
+</body>
 </html>
