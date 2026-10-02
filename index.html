@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Exercise Studio: a front door to the guided exercise tools in the Digital Tools exercise folder, for adults of all ages. Part of Everyday Compass.">
+<meta name="description" content="Exercise Studio: a front door to the guided exercise tools, for adults of all ages. Part of Everyday Compass.">
 <meta name="referrer" content="no-referrer">
 <title>Exercise Studio — Everyday Compass</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2317B96B'/%3E%3Cpath d='M12 22l5 5 11-13' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -12,7 +12,7 @@
 :root{--ink:#17335F;--accent:#0E9B91;--gray:#665F57;--light-gray:#8D857B;--label:#E05A24;--shadow:0 10px 25px rgba(25,71,103,.11)}
 *{box-sizing:border-box}
 body{margin:0;font-family:'Libre Franklin',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 12% 4%,rgba(39,117,230,.13),transparent 24%),radial-gradient(circle at 90% 10%,rgba(24,184,107,.15),transparent 24%),#DDF4F1;line-height:1.5}
-.phone{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#FFFDF8 0%,#FFF9EE 100%);box-shadow:0 0 40px rgba(20,69,90,.16)}
+.phone{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#FFFDF8 0%,#FFF9EE 100%);box-shadow:0 0 40px rgba(20,69,90,.16)}
 a{color:inherit;text-decoration:none}
 a:focus-visible{outline:3px solid #925300;outline-offset:3px}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -69,6 +69,19 @@ footer p{margin:0 0 4px;font-size:13px;color:var(--light-gray)}
 .soon p{margin:0;font-size:15.5px;color:var(--gray)}
 .soon .pill{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#2775E6;background:#fff;border:1px solid #BFD3FF;border-radius:999px;padding:5px 12px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media(min-width:560px){
+  header{padding:30px 28px 26px}
+  header h1{font-size:28px}
+  header p{font-size:15.5px}
+  main{padding:24px 28px 34px;gap:18px}
+  .notice{font-size:16px;padding:16px 20px}
+  .tool h2{font-size:23px}
+  .desc{font-size:16.5px}
+  .tool-body{padding:20px 22px 22px}
+  .chips li{font-size:13.5px}
+  .tips{font-size:16px;padding:18px 22px}
+  .soon{padding:24px 22px}
+}
 @media print{.icon-btn,.open,.home,.picker{display:none}}
 </style>
 </head>
@@ -98,18 +111,18 @@ footer p{margin:0 0 4px;font-size:13px;color:var(--light-gray)}
   </section>
   <a class="home" href="https://jjkwan118-glitch.github.io/EverydayCompass/">← Back to Everyday Compass</a>
 </main>
-<footer><p>Part of Everyday Compass · An independent hub, not a medical service.</p><p>This page checks the Digital Tools exercise folder for new tools when it opens.</p></footer>
+<footer><p>Part of Everyday Compass · An independent hub, not a medical service.</p><p>This page checks for new exercise tools when it opens.</p></footer>
 </div>
 <noscript><p style="max-width:430px;margin:0 auto;padding:16px">Turn on JavaScript to see the exercise cards. You can still open the tools directly:
 <a href="https://jjkwan118-glitch.github.io/exercisestudio/LegStrengthBalance.html">Leg Strength &amp; Balance</a>,
 <a href="https://jjkwan118-glitch.github.io/exercisestudio/lowerbackhipmobility.html">Lower Back &amp; Hip Mobility</a>,
-<a href="https://pages.sharable.link/q850ldwm">Knee Support Strength</a>.</p></noscript>
+<a href="https://jjkwan118-glitch.github.io/exercisestudio/kneesupportstrength.html">Knee Support Strength</a>.</p></noscript>
 <script>
 /* ============ SETTINGS: where the exercise tools live (the tools themselves are NOT copied here) ============ */
 const CFG = {
-  owner: 'sgkjeajk',
-  repo:  'digital-tools',
-  dir:   'exercise',
+  owner: 'jjkwan118-glitch',
+  repo:  'exercisestudio',
+  dir:   '',                                    /* '' = the tools sit in the main folder next to this page */
   base:  'https://jjkwan118-glitch.github.io/exercisestudio/'
 };
 /* Nicer names, descriptions and pictures for tools we already know. Any other .html file found in the folder is
@@ -123,9 +136,6 @@ const KNOWN = {
     desc:'A guided routine of lower back and hip mobility exercises. Each exercise is held for 20 seconds, 3 sets. These settings can be adjusted in the tool’s Settings.',
     chips:['Guided routine','20 sec × 3 sets','Adjustable settings','Demonstrations']},
   'kneesupportstrength.html': {name:'Knee Support Strength Coach', tag:'Knee · Strength', c:'#F59A23', soft:'#FFF1DE', art:'knee',
-    /* TEMPORARY: the kneesupportstrength.html in the exercise folder is currently a copy of the Digital Tools home page, so this card opens the original knee tool instead.
-       Once the real knee tool file is uploaded to the exercise folder, delete the next line and the card will open that file. */
-    href:'https://pages.sharable.link/q850ldwm',
     desc:'A guided exercise tool designed to make a knee-strengthening routine easier to understand and follow.',
     chips:['Step-by-step routine','Clear instructions','Demonstrations','Simple guided format']}
 };
@@ -231,15 +241,17 @@ async function pageTitle(file){
 }
 async function discover(){
   const ctl=new AbortController(); const timer=setTimeout(()=>ctl.abort(),8000);
-  const r=await fetch('https://api.github.com/repos/'+CFG.owner+'/'+CFG.repo+'/contents/'+CFG.dir,{headers:{Accept:'application/vnd.github+json'},signal:ctl.signal});
+  const r=await fetch('https://api.github.com/repos/'+CFG.owner+'/'+CFG.repo+'/contents'+(CFG.dir?'/'+CFG.dir:''),{headers:{Accept:'application/vnd.github+json'},signal:ctl.signal});
   clearTimeout(timer);
   if(!r.ok) throw new Error('folder list unavailable');
   const items=await r.json();
-  const files=items.filter(i=>i.type==='file'&&/\.html?$/i.test(i.name)&&!/^(index|readme)\.html?$/i.test(i.name)).map(i=>i.name);
+  const files=items.filter(i=>i.type==='file'&&/\.html?$/i.test(i.name)&&!/^(index|readme|404)\.html?$/i.test(i.name)).map(i=>i.name);
   if(!files.length) throw new Error('no tools found');
   const out=[]; let extra=0;
   const known=files.filter(f=>KNOWN[f.toLowerCase()]).sort((a,b)=>ORDER.indexOf(a.toLowerCase())-ORDER.indexOf(b.toLowerCase()));
   known.forEach(f=>out.push(knownEntry(f)));
+  ORDER.forEach(f=>{ const k=KNOWN[f]; if(k && k.href && !known.some(x=>x.toLowerCase()===f)){ out.push(knownEntry(f)); } });
+  out.sort((a,b)=>{ const ia=ORDER.indexOf(a.file.toLowerCase()), ib=ORDER.indexOf(b.file.toLowerCase()); return (ia<0?99:ia)-(ib<0?99:ib); });
   const unknown=files.filter(f=>!KNOWN[f.toLowerCase()]).sort((a,b)=>a.localeCompare(b));
   for(const f of unknown){
     const [c,soft]=EXTRA_COLOURS[extra++%EXTRA_COLOURS.length];
