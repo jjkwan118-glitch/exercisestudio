@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Exercise Studio: a front door to the guided exercise tools in the Digital Tools exercise folder, for adults of all ages. Part of Everyday Compass.">
+<meta name="description" content="Exercise Studio: a front door to the guided exercise tools, for adults of all ages. Part of Everyday Compass.">
 <meta name="referrer" content="no-referrer">
 <title>Exercise Studio — Everyday Compass</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2317B96B'/%3E%3Cpath d='M12 22l5 5 11-13' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -98,19 +98,19 @@ footer p{margin:0 0 4px;font-size:13px;color:var(--light-gray)}
   </section>
   <a class="home" href="https://sgkjeajk.github.io/EverydayCompass/">← Back to Everyday Compass</a>
 </main>
-<footer><p>Part of Everyday Compass · An independent hub, not a medical service.</p><p>This page checks the Digital Tools exercise folder for new tools when it opens.</p></footer>
+<footer><p>Part of Everyday Compass · An independent hub, not a medical service.</p><p>This page checks for new exercise tools when it opens.</p></footer>
 </div>
 <noscript><p style="max-width:430px;margin:0 auto;padding:16px">Turn on JavaScript to see the exercise cards. You can still open the tools directly:
-<a href="https://sgkjeajk.github.io/digital-tools/exercise/LegStrengthBalance.html">Leg Strength &amp; Balance</a>,
-<a href="https://sgkjeajk.github.io/digital-tools/exercise/lowerbackhipmobility.html">Lower Back &amp; Hip Mobility</a>,
-<a href="https://pages.sharable.link/q850ldwm">Knee Support Strength</a>.</p></noscript>
+<a href="https://sgkjeajk.github.io/exercisestudio/LegStrengthBalance.html">Leg Strength &amp; Balance</a>,
+<a href="https://sgkjeajk.github.io/exercisestudio/lowerbackhipmobility.html">Lower Back &amp; Hip Mobility</a>,
+<a href="https://sgkjeajk.github.io/exercisestudio/kneesupportstrength.html">Knee Support Strength</a>.</p></noscript>
 <script>
 /* ============ SETTINGS: where the exercise tools live (the tools themselves are NOT copied here) ============ */
 const CFG = {
   owner: 'sgkjeajk',
-  repo:  'digital-tools',
-  dir:   'exercise',
-  base:  'https://sgkjeajk.github.io/digital-tools/exercise/'
+  repo:  'exercisestudio',
+  dir:   '',                                    /* '' = the tools sit in the main folder next to this page */
+  base:  'https://sgkjeajk.github.io/exercisestudio/'
 };
 /* Nicer names, descriptions and pictures for tools we already know. Any other .html file found in the folder is
    added automatically with a title read from that tool's own page. Matching is by file name, ignoring capitals. */
@@ -123,9 +123,6 @@ const KNOWN = {
     desc:'A guided routine of lower back and hip mobility exercises. Each exercise is held for 20 seconds, 3 sets. These settings can be adjusted in the tool’s Settings.',
     chips:['Guided routine','20 sec × 3 sets','Adjustable settings','Demonstrations']},
   'kneesupportstrength.html': {name:'Knee Support Strength Coach', tag:'Knee · Strength', c:'#F59A23', soft:'#FFF1DE', art:'knee',
-    /* TEMPORARY: the kneesupportstrength.html in the exercise folder is currently a copy of the Digital Tools home page, so this card opens the original knee tool instead.
-       Once the real knee tool file is uploaded to the exercise folder, delete the next line and the card will open that file. */
-    href:'https://pages.sharable.link/q850ldwm',
     desc:'A guided exercise tool designed to make a knee-strengthening routine easier to understand and follow.',
     chips:['Step-by-step routine','Clear instructions','Demonstrations','Simple guided format']}
 };
@@ -231,15 +228,17 @@ async function pageTitle(file){
 }
 async function discover(){
   const ctl=new AbortController(); const timer=setTimeout(()=>ctl.abort(),8000);
-  const r=await fetch('https://api.github.com/repos/'+CFG.owner+'/'+CFG.repo+'/contents/'+CFG.dir,{headers:{Accept:'application/vnd.github+json'},signal:ctl.signal});
+  const r=await fetch('https://api.github.com/repos/'+CFG.owner+'/'+CFG.repo+'/contents'+(CFG.dir?'/'+CFG.dir:''),{headers:{Accept:'application/vnd.github+json'},signal:ctl.signal});
   clearTimeout(timer);
   if(!r.ok) throw new Error('folder list unavailable');
   const items=await r.json();
-  const files=items.filter(i=>i.type==='file'&&/\.html?$/i.test(i.name)&&!/^(index|readme)\.html?$/i.test(i.name)).map(i=>i.name);
+  const files=items.filter(i=>i.type==='file'&&/\.html?$/i.test(i.name)&&!/^(index|readme|404)\.html?$/i.test(i.name)).map(i=>i.name);
   if(!files.length) throw new Error('no tools found');
   const out=[]; let extra=0;
   const known=files.filter(f=>KNOWN[f.toLowerCase()]).sort((a,b)=>ORDER.indexOf(a.toLowerCase())-ORDER.indexOf(b.toLowerCase()));
   known.forEach(f=>out.push(knownEntry(f)));
+  ORDER.forEach(f=>{ const k=KNOWN[f]; if(k && k.href && !known.some(x=>x.toLowerCase()===f)){ out.push(knownEntry(f)); } });
+  out.sort((a,b)=>{ const ia=ORDER.indexOf(a.file.toLowerCase()), ib=ORDER.indexOf(b.file.toLowerCase()); return (ia<0?99:ia)-(ib<0?99:ib); });
   const unknown=files.filter(f=>!KNOWN[f.toLowerCase()]).sort((a,b)=>a.localeCompare(b));
   for(const f of unknown){
     const [c,soft]=EXTRA_COLOURS[extra++%EXTRA_COLOURS.length];
